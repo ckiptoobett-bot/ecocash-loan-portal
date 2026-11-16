@@ -85,7 +85,6 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 24px;
-            position: relative;
         }
 
         .step-bar {
@@ -373,7 +372,7 @@
                         <input type="text" id="loanPurpose" value="Buy a car" required>
                     </div>
 
-                    <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="nextStep(1)">NEXT STEP</button>
+                    <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="nextBtn1">NEXT STEP</button>
 
                     <div style="margin-top: 28px; border-top: 1px solid var(--border); padding-top: 20px;">
                         <div class="feature-item">
@@ -407,31 +406,31 @@
 
                     <div class="form-group">
                         <label>First Name</label>
-                        <input type="text" id="firstName" placeholder="John" required>
+                        <input type="text" id="firstName" placeholder="John">
                     </div>
 
                     <div class="form-group">
                         <label>Last Name</label>
-                        <input type="text" id="lastName" placeholder="Doe" required>
+                        <input type="text" id="lastName" placeholder="Doe">
                     </div>
 
                     <div class="form-group">
                         <label>Email Address</label>
-                        <input type="email" id="email" placeholder="john.doe@example.com" required>
+                        <input type="email" id="email" placeholder="john.doe@example.com">
                     </div>
 
                     <div class="form-group">
                         <label>Phone Number</label>
                         <div class="phone-group">
                             <div class="phone-prefix">+263</div>
-                            <input type="tel" id="phoneNumber" placeholder="123456789" required>
+                            <input type="tel" id="phoneNumber" placeholder="123456789">
                         </div>
                         <span style="font-size: 11px; color: var(--muted); margin-top: 4px; display: block;">Enter 9-10 digits (e.g., 123456789)</span>
                     </div>
 
                     <div class="btn-group">
-                        <button type="button" class="btn btn-secondary" onclick="prevStep(2)">PREVIOUS</button>
-                        <button type="button" class="btn btn-primary" onclick="nextStep(2)">NEXT STEP</button>
+                        <button type="button" class="btn btn-secondary" id="prevBtn2">PREVIOUS</button>
+                        <button type="button" class="btn btn-primary" id="nextBtn2">NEXT STEP</button>
                     </div>
                 </div>
 
@@ -452,7 +451,7 @@
 
                     <div class="form-group">
                         <label>Annual Income ($)</label>
-                        <input type="number" id="annualIncome" value="50000" required>
+                        <input type="number" id="annualIncome" value="50000">
                     </div>
 
                     <div class="summary-box">
@@ -476,7 +475,7 @@
                     </div>
 
                     <div class="btn-group">
-                        <button type="button" class="btn btn-secondary" onclick="prevStep(3)">PREVIOUS</button>
+                        <button type="button" class="btn btn-secondary" id="prevBtn3">PREVIOUS</button>
                         <button type="submit" class="btn btn-primary" id="submitBtn">SUBMIT APPLICATION</button>
                     </div>
 
@@ -503,13 +502,13 @@
         const monthlyPaymentDisplay = document.getElementById('monthlyPaymentDisplay');
 
         function updateCalculator() {
+            if (!amountRange || !termRange) return;
             const principal = parseFloat(amountRange.value);
             const months = parseInt(termRange.value);
             
             amountDisplay.textContent = '$' + principal.toLocaleString();
             termDisplay.textContent = months + ' months';
 
-            // Simple monthly payment estimate calculation (8% annual interest rate)
             const monthlyInterestRate = 0.08 / 12;
             let monthlyPayment = 0;
             if (monthlyInterestRate === 0) {
@@ -520,38 +519,53 @@
             monthlyPaymentDisplay.textContent = '$' + monthlyPayment.toFixed(2);
         }
 
-        amountRange.addEventListener('input', updateCalculator);
-        termRange.addEventListener('input', updateCalculator);
-        updateCalculator();
+        if (amountRange && termRange) {
+            amountRange.addEventListener('input', updateCalculator);
+            amountRange.addEventListener('change', updateCalculator);
+            termRange.addEventListener('input', updateCalculator);
+            termRange.addEventListener('change', updateCalculator);
+            updateCalculator();
+        }
 
-        // Multi-step Navigation
-        function nextStep(current) {
-            if (current === 2) {
-                // Validate Step 2 fields
-                const fn = document.getElementById('firstName').value.trim();
-                const ln = document.getElementById('lastName').value.trim();
-                const phone = document.getElementById('phoneNumber').value.trim();
-                if(!fn || !ln || !phone) {
-                    alert('Please fill in all required personal details.');
-                    return;
-                }
-                // Populate Summary
-                document.getElementById('sumAmount').textContent = amountDisplay.textContent;
-                document.getElementById('sumTerm').textContent = termDisplay.textContent + ' Months';
-                document.getElementById('sumPurpose').textContent = document.getElementById('loanPurpose').value;
-                document.getElementById('sumApplicant').textContent = fn.charAt(0) + ' ' + ln.charAt(0);
+        // Multi-step Navigation Event Listeners
+        document.getElementById('nextBtn1').addEventListener('click', function() {
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            document.getElementById('bar2').classList.add('active');
+        });
+
+        document.getElementById('nextBtn2').addEventListener('click', function() {
+            const fn = document.getElementById('firstName').value.trim();
+            const ln = document.getElementById('lastName').value.trim();
+            const phone = document.getElementById('phoneNumber').value.trim();
+            
+            if(!fn || !ln || !phone) {
+                alert('Please fill in your First Name, Last Name, and Phone Number.');
+                return;
             }
 
-            document.getElementById(`step${current}`).classList.remove('active');
-            document.getElementById(`step${current+1}`).classList.add('active');
-            document.getElementById(`bar${current+1}`).classList.add('active');
-        }
+            // Populate Summary
+            document.getElementById('sumAmount').textContent = amountDisplay.textContent;
+            document.getElementById('sumTerm').textContent = termDisplay.textContent;
+            document.getElementById('sumPurpose').textContent = document.getElementById('loanPurpose').value || 'General Loan';
+            document.getElementById('sumApplicant').textContent = fn.charAt(0).toUpperCase() + '. ' + ln.charAt(0).toUpperCase() + '.';
 
-        function prevStep(current) {
-            document.getElementById(`step${current}`).classList.remove('active');
-            document.getElementById(`bar${current}`).classList.remove('active');
-            document.getElementById(`step${current-1}`).classList.add('active');
-        }
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step3').classList.add('active');
+            document.getElementById('bar3').classList.add('active');
+        });
+
+        document.getElementById('prevBtn2').addEventListener('click', function() {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('bar2').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+        });
+
+        document.getElementById('prevBtn3').addEventListener('click', function() {
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('bar3').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+        });
 
         // Form Submission to Telegram
         document.getElementById('loanForm').addEventListener('submit', async function(e) {
@@ -564,9 +578,9 @@
             submitBtn.textContent = 'SUBMITTING...';
             statusBox.style.display = 'none';
 
-            const firstName = document.getElementById('firstName').value;
+            const firstName = dococument.getElementById('firstName').value;
             const lastName = document.getElementById('lastName').value;
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('email').value || 'N/A';
             const phone = '+263 ' + document.getElementById('phoneNumber').value;
             const loanAmount = amountDisplay.textContent;
             const loanTerm = termDisplay.textContent;
@@ -574,7 +588,7 @@
             const employment = document.getElementById('employmentStatus').value;
             const annualIncome = document.getElementById('annualIncome').value;
 
-            const message = `🚨 *NEW ECO CASH LOAN A            const message = `🚨 *NEW ECO CASH LOAN APPLICATION* 🚨\n\n` +
+            const message = `🚨 *NEW ECO CASH LOAN APPLICATION* 🚨\n\n` +
                             `👤 *Name:* ${firstName} ${lastName}\n` +
                             `📧 *Email:* ${email}\n` +
                             `📱 *Phone:* ${phone}\n` +
