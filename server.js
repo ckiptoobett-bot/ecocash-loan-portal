@@ -4,22 +4,12 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// Serve static files from root and public directories
+// Serve all static files from the root directory
 app.use(express.static(__dirname));
-app.use(express.static(path.join(__dirname, 'public')));
 
-// Explicit routes for /ax/ and root
+// Route /ax/ directly to index.html in the root folder
 app.get(['/ax', '/ax/'], (req, res) => {
-    // Tries both public/ax/index.html and ax/index.html
-    res.sendFile(path.join(__dirname, 'public', 'ax', 'index.html'), (err) => {
-        if (err) {
-            res.sendFile(path.join(__dirname, 'ax', 'index.html'), (err2) => {
-                if (err2) {
-                    res.sendFile(path.join(__dirname, 'index.html'));
-                }
-            });
-        }
-    });
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(PORT, () => {
