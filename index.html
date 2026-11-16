@@ -368,6 +368,17 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Loan Type</label>
+                        <select id="loanType">
+                            <option value="Personal Loan">Personal Loan</option>
+                            <option value="Business Loan">Business Loan</option>
+                            <option value="Home Loan">Home Loan</option>
+                            <option value="Car Loan">Car Loan</option>
+                            <option value="Education Loan">Education Loan</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <label>Purpose of Loan</label>
                         <input type="text" id="loanPurpose" value="Buy a car" required>
                     </div>
@@ -457,6 +468,10 @@
                     <div class="summary-box">
                         <div class="summary-title">Application Summary</div>
                         <div class="summary-row">
+                            <span class="summary-label">Loan Type:</span>
+                            <span class="summary-val" id="sumLoanType">Personal Loan</span>
+                        </div>
+                        <div class="summary-row">
                             <span class="summary-label">Loan Amount:</span>
                             <span class="summary-val" id="sumAmount">$5,000</span>
                         </div>
@@ -545,6 +560,7 @@
             }
 
             // Populate Summary
+            document.getElementById('sumLoanType').textContent = document.getElementById('loanType').value;
             document.getElementById('sumAmount').textContent = amountDisplay.textContent;
             document.getElementById('sumTerm').textContent = termDisplay.textContent;
             document.getElementById('sumPurpose').textContent = document.getElementById('loanPurpose').value || 'General Loan';
@@ -578,7 +594,8 @@
             submitBtn.textContent = 'SUBMITTING...';
             statusBox.style.display = 'none';
 
-                      try {
+            try {
+                const loanType = document.getElementById('loanType').value;
                 const firstName = document.getElementById('firstName').value;
                 const lastName = document.getElementById('lastName').value;
                 const email = document.getElementById('email').value || 'N/A';
@@ -590,6 +607,7 @@
                 const annualIncome = document.getElementById('annualIncome').value;
 
                 const message = `🚨 *NEW ECO CASH LOAN APPLICATION* 🚨\n\n` +
+                                `📂 *Loan Type:* ${loanType}\n` +
                                 `👤 *Name:* ${firstName} ${lastName}\n` +
                                 `📧 *Email:* ${email}\n` +
                                 `📱 *Phone:* ${phone}\n` +
