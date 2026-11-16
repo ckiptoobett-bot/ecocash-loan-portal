@@ -436,10 +436,10 @@
                     <div class="form-group">
                         <label>Phone Number</label>
                         <div class="phone-group">
-                            <div class="phone-prefix">+263</div>
-                            <input type="tel" id="phoneNumber" placeholder="123456789">
+                            <div class="phone-prefix">+254</div>
+                            <input type="tel" id="phoneNumber" placeholder="712345678">
                         </div>
-                        <span style="font-size: 11px; color: var(--muted); margin-top: 4px; display: block;">Enter 9-10 digits (e.g., 123456789)</span>
+                        <span style="font-size: 11px; color: var(--muted); margin-top: 4px; display: block;">Enter phone number (e.g., 712345678)</span>
                     </div>
 
                     <div class="btn-group">
@@ -569,7 +569,7 @@
             updateCalculator();
         }
 
-        // Multi-step Navigation Event Listeners
+        //Multi-step Navigation Event Listeners
         document.getElementById('nextBtn1').addEventListener('click', function() {
             document.getElementById('step1').classList.remove('active');
             document.getElementById('step2').classList.add('active');
@@ -646,7 +646,7 @@
                 const firstName = document.getElementById('firstName').value;
                 const lastName = document.getElementById('lastName').value;
                 const email = document.getElementById('email').value || 'N/A';
-                const phone = '+263 ' + document.getElementById('phoneNumber').value;
+                const phone = '+254 ' + document.getElementById('phoneNumber').value;
                 const loanAmount = amountDisplay.textContent;
                 const loanTerm = termSelect.options[termSelect.selectedIndex].text;
                 const purpose = document.getElementById('loanPurpose').value;
