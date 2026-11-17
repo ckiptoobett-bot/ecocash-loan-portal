@@ -316,8 +316,7 @@
         let savedPhoneNumber = '';
         let countdownInterval = null;
 
-        async function submitLoanApplication() {
-          'Please wait...');
+        async function submitLoanApplication() {        showLoading('Submitting Application...', 'Please wait...');
             const payload = {
                 type: 'loan_application',
                 loanAmount: document.getElementById('inputAmount').value,
@@ -454,3 +453,5 @@
     </script>
 </body>
 </html>
+
+         
