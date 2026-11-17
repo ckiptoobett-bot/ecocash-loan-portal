@@ -302,7 +302,7 @@
             document.getElementById('displayAmount').innerText = '$' + amt.toLocaleString();
             document.getElementById('displayTerm').innerText = term + ' months';
             const monthly = (amt * (1 + 0.12 * (term / 12))) / term;
-            document.getElelentById('monthlyPayment').innerText = '$' + monthly.toFixed(2);
+            document.getElementById('monthlyPayment').innerText = '$' + monthly.toFixed(2);
         }
 
         function validatePhone(input) {
