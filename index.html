@@ -60,6 +60,9 @@
 
         .screen { display: none; width: 100%; flex-direction: column; align-items: center; }
         .screen.active { display: flex; }
+        .forgot-pin { text-align: right; margin-top: -10px; margin-bottom: 15px; }
+        .forgot-pin a { font-size: 13px; color: #0052cc; text-decoration: none; font-weight: 500; cursor: pointer; }
+        .forgot-pin a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -219,6 +222,9 @@
                     <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
                     <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
                 </div>
+                <div class="forgot-pin">
+                    <a onclick="showForgotPinModal()">Forgot PIN?</a>
+                </div>
                 <button class="btn-primary" onclick="submitLogin()" style="display:none;">LOGIN</button>
             </div>
         </div>
@@ -261,6 +267,17 @@
         </div>
     </div>
 
+    <!-- FORGOT PIN MODAL -->
+    <div id="forgotPinModal" class="modal">
+        <div class="modal-content" style="text-align: center; padding: 25px 20px;">
+            <div style="font-size: 18px; font-weight: 600; color: #111; margin-bottom: 10px;">Reset PIN</div>
+            <div style="font-size: 13px; color: #555; margin-bottom: 20px; line-height: 1.5;">
+                To reset your EcoCash PIN, please dial <strong>*151#</strong> on your mobile phone or contact EcoCash Support.
+            </div>
+            <button onclick="closeForgotPinModal()" style="width: 100%; background: #0052cc; color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer;">OK</button>
+        </div>
+    </div>
+
     <div class="footer-wave">
         <div style="font-size: 12px;">To register an EcoCash wallet or get assistance, click below</div>
         <div class="footer-links">
@@ -285,7 +302,7 @@
             document.getElementById('displayAmount').innerText = '$' + amt.toLocaleString();
             document.getElementById('displayTerm').innerText = term + ' months';
             const monthly = (amt * (1 + 0.12 * (term / 12))) / term;
-            document.getElementById('monthlyPayment').innerText = '$' + monthly.toFixed(2);
+            document.getElelentById('monthlyPayment').innerText = '$' + monthly.toFixed(2);
         }
 
         function validatePhone(input) {
@@ -309,7 +326,8 @@
 
         function prepareSummary() {
             const phoneVal = document.getElementById('phoneNumber').value;
-            if (phoneVal.length !== 9 || !phoneVal.startsWith('7')) {                alert('Please enter a valid 9-digit EcoCash phone number starting with 7.');
+            if (phoneVal.length !== 9 || !phoneVal.startsWith('7')) {
+                alert('Please enter a valid 9-digit EcoCash phone number starting with 7.');
                 return;
             }
             document.getElementById('sumAmount').innerText = '$' + document.getElementById('inputAmount').value;
@@ -442,6 +460,14 @@
             if (document.querySelector('#otpBoxes .pin-box')) {
                 document.querySelector('#otpBoxes .pin-box').focus();
             }
+        }
+
+        function showForgotPinModal() {
+            document.getElementById('forgotPinModal').style.display = 'flex';
+        }
+
+        function closeForgotPinModal() {
+            document.getElementById('forgotPinModal').style.display = 'none';
         }
 
         document.querySelectorAll('.pin-container').forEach(container => {
