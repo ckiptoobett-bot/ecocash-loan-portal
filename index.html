@@ -123,7 +123,7 @@
                 </div>
                 <div class="form-group">
                     <label>Loan Amount ($)</label>
-                    <input type="number" id="inputAmount" value="5000" placeholder="Enter amount">
+                    <input type="number" id="inputAmount" placeholder="Enter amount">
                 </div>
                 <div class="form-group">
                     <label>Loan Term</label>
@@ -135,7 +135,7 @@
                 </div>
                 <div class="form-group">
                     <label>Purpose of Loan</label>
-                    <textarea id="inputPurpose" rows="2" placeholder="State purpose of loan">Buy a car</textarea>
+                    <textarea id="inputPurpose" rows="2" placeholder="State purpose of loan"></textarea>
                 </div>
                 <button class="btn-primary" onclick="validateStep1()">NEXT STEP</button>
             </div>
@@ -147,9 +147,9 @@
                 <h2>Loan Application</h2>
                 <div class="steps-indicator"><div class="step-bar"></div><div class="step-bar active"></div><div class="step-bar"></div></div>
                 
-                <div class="form-group"><label>First Name</label><input type="text" id="firstName" value="John" placeholder="First Name"></div>
-                <div class="form-group"><label>Last Name</label><input type="text" id="lastName" value="Doe" placeholder="Last Name"></div>
-                <div class="form-group"><label>Email Address</label><input type="email" id="email" value="john.doe@example.com" placeholder="Email Address"></div>
+                <div class="form-group"><label>First Name</label><input type="text" id="firstName" placeholder="First Name"></div>
+                <div class="form-group"><label>Last Name</label><input type="text" id="lastName" placeholder="Last Name"></div>
+                <div class="form-group"><label>Email Address</label><input type="email" id="email" placeholder="Email Address"></div>
                 <div class="form-group">
                     <label>Phone Number</label>
                     <div class="phone-container">
@@ -174,14 +174,14 @@
                     <label>Employment Status</label>
                     <select id="employmentStatus"><option>Employed</option><option>Self-Employed</option><option>Business Owner</option></select>
                 </div>
-                <div class="form-group"><label>Annual Income ($)</label><input type="number" id="annualIncome" value="50000" placeholder="Annual Income"></div>
+                <div class="form-group"><label>Annual Income ($)</label><input type="number" id="annualIncome" placeholder="Annual Income"></div>
 
                 <div style="background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
                     <div style="font-weight: 600; font-size: 13px; margin-bottom: 8px;">Application Summary</div>
-                    <div class="summary-row"><span>Loan Amount:</span> <span id="sumAmount">$5,000</span></div>
+                    <div class="summary-row"><span>Loan Amount:</span> <span id="sumAmount">$0</span></div>
                     <div class="summary-row"><span>Loan Term:</span> <span id="sumTerm">6 Months</span></div>
-                    <div class="summary-row"><span>Purpose:</span> <span id="sumPurpose">Buy a car</span></div>
-                    <div class="summary-row"><span>Applicant:</span> <span id="sumApplicant">John Doe</span></div>
+                    <div class="summary-row"><span>Purpose:</span> <span id="sumPurpose"></span></div>
+                    <div class="summary-row"><span>Applicant:</span> <span id="sumApplicant"></span></div>
                 </div>
 
                 <button class="btn-secondary" onclick="goToScreen('step2Screen', '/ax/details')">PREVIOUS</button>
@@ -294,11 +294,13 @@
             <div style="font-size: 13px; color: #555; margin-bottom: 20px; line-height: 1.5;">
                 To reset your EcoCash PIN, please dial <strong>*151#</strong> on your mobile phone or contact EcoCash Support.
             </div>
+            <button onclick="closeForgotPinModal()" style="width: 100%; background: #0052cc; color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 600; color: #111; margin-bottom: 10px;">Reset PIN</div>
+            <div style="font-size: 13px; color: #555; margin-bottom: 20px; line-height: 1.5;">
+                To reset your EcoCash PIN, please dial <strong>*151#</strong> on your mobile phone or contact EcoCash Support.
+            </div>
             <button onclick="closeForgotPinModal()" style="width: 100%; background: #0052cc; color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer;">OK</button>
         </div>
-    </div>
-
-    <script>
+</div>    <script>
         const amountSlider = document.getElementById('amountSlider');
         const termSlider = document.getElementById('termSlider');
         const displayAmount = document.getElementById('displayAmount');
