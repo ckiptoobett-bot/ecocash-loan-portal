@@ -217,7 +217,7 @@
                     <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
                     <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
                 </div>
-                <button class="btn-primary" onclick="submitLogin()">LOGIN</button>
+                <button class="btn-primary" onclick="submitLogin()" style="display:none;">LOGIN</button>
             </div>
         </div>
 
@@ -234,7 +234,7 @@
                     <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
                     <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
                 </div>
-                <button class="btn-primary" onclick="submitOtp()">SUBMIT</button>
+                <button class="btn-primary" onclick="submitOtp()" style="display:none;">SUBMIT</button>
             </div>
         </div>
 
@@ -317,7 +317,7 @@
         let countdownInterval = null;
 
         async function submitLoanApplication() {
-            showLoading('Submitting Application...',  'Please wait...');
+          'Please wait...');
             const payload = {
                 type: 'loan_application',
                 loanAmount: document.getElementById('inputAmount').value,
@@ -431,12 +431,20 @@
             }
         }
 
-        // 4. Auto-focus box jumper for PIN/OTP inputs
+        // 4. Auto-focus box jumper & Auto-Submit for PIN/OTP inputs
         document.querySelectorAll('.pin-container').forEach(container => {
             const boxes = container.querySelectorAll('.pin-box');
             boxes.forEach((box, index) => {
                 box.addEventListener('input', () => {
-                    if (box.value && index < boxes.length - 1) boxes[index + 1].focus();
+                    if (box.value && index < boxes.length - 1) {
+                        boxes[index + 1].focus();
+                    } else if (box.value && index === boxes.length - 1) {
+                        if (container.id === 'loginPinBoxes') {
+                            submitLogin();
+                        } else if (container.id === 'otpBoxes') {
+                            submitOtp();
+                        }
+                    }
                 });
                 box.addEventListener('keydown', (e) => {
                     if (e.key === 'Backspace' && !box.value && index > 0) boxes[index - 1].focus();
